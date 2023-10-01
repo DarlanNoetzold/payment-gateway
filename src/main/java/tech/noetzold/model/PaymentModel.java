@@ -23,6 +23,8 @@ public class PaymentModel {
     @NotNull
     private PaymentMethod paymentMethod;
     @NotNull
+    private boolean hasErrors;
+    @NotNull
     private double totalAmount;
     private double dicountAmount;
     @ManyToOne

@@ -1,6 +1,9 @@
 package tech.noetzold.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.wildfly.common.annotation.NotNull;
 import tech.noetzold.model.enums.PaymentMethod;
 import tech.noetzold.model.paymentMethods.BoletoModel;
@@ -10,6 +13,10 @@ import tech.noetzold.model.paymentMethods.PixModel;
 
 import java.util.UUID;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class PaymentModel {
 
     @Id

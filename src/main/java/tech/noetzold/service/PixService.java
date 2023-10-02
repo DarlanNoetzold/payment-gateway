@@ -1,8 +1,11 @@
 package tech.noetzold.service;
 
 
+import io.quarkus.cache.CacheInvalidateAll;
+import io.quarkus.cache.CacheResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import tech.noetzold.model.paymentMethods.PixModel;
@@ -17,15 +20,21 @@ public class PixService {
     @Inject
     PixRepository pixRepository;
 
+    @Transactional
+    @CacheResult(cacheName = "pix")
     public PixModel findPixModelById(UUID id){
         Optional<PixModel> optionalPixModel = pixRepository.findByIdOptional(id);
         return optionalPixModel.orElse(null);
     }
 
+    @Transactional
+    @CacheInvalidateAll(cacheName = "pix")
     public void savePixModel(PixModel pixModel){
         pixRepository.persist(pixModel);
     }
 
+    @Transactional
+    @CacheInvalidateAll(cacheName = "pix")
     public void updatePixModel(PixModel pixModel){
         if (pixModel == null || pixModel.getId() == null) {
             throw new WebApplicationException("Invalid data for pixModel update", Response.Status.BAD_REQUEST);
@@ -43,6 +52,8 @@ public class PixService {
         pixRepository.persist(existingPixModel);
     }
 
+    @Transactional
+    @CacheInvalidateAll(cacheName = "pix")
     public void deletePixModelById(UUID id){
         pixRepository.deleteById(id);
     }

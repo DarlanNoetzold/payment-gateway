@@ -1,8 +1,11 @@
 package tech.noetzold.service;
 
 
+import io.quarkus.cache.CacheInvalidateAll;
+import io.quarkus.cache.CacheResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import tech.noetzold.model.CustomerModel;
@@ -18,15 +21,21 @@ public class PaymentService {
     @Inject
     PaymentRepository paymentRepository;
 
+    @Transactional
+    @CacheResult(cacheName = "payment")
     public PaymentModel findPaymentModelById(UUID id){
         Optional<PaymentModel> optionalPaymentModel = paymentRepository.findByIdOptional(id);
         return optionalPaymentModel.orElse(null);
     }
 
+    @Transactional
+    @CacheInvalidateAll(cacheName = "payment")
     public void savePaymentModel(PaymentModel paymentModel){
         paymentRepository.persist(paymentModel);
     }
 
+    @Transactional
+    @CacheInvalidateAll(cacheName = "payment")
     public void updatePaymentModel(PaymentModel paymentModel){
         if (paymentModel == null || paymentModel.getId() == null) {
             throw new WebApplicationException("Invalid data for paymentModel update", Response.Status.BAD_REQUEST);
@@ -50,6 +59,8 @@ public class PaymentService {
         paymentRepository.persist(existingPaymentModel);
     }
 
+    @Transactional
+    @CacheInvalidateAll(cacheName = "payment")
     public void deletePaymentModelById(UUID id){
         paymentRepository.deleteById(id);
     }

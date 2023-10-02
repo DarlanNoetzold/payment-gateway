@@ -1,7 +1,9 @@
 package tech.noetzold.service;
 
+import io.quarkus.cache.CacheResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import tech.noetzold.model.paymentMethods.BoletoModel;
@@ -17,14 +19,22 @@ public class BoletoService {
     BoletoRepository boletoRepository;
 
 
+    @Transactional
+    @CacheResult(cacheName = "boleto")
     public BoletoModel findBoletoModelById(UUID id){
         Optional<BoletoModel> optionalBoletoModel = boletoRepository.findByIdOptional(id);
         return optionalBoletoModel.orElse(null);
     }
 
+    @Transactional
+    @CacheResult(cacheName = "boleto")
+
     public void saveBoletoModel(BoletoModel boletoModel){
         boletoRepository.persist(boletoModel);
     }
+
+    @Transactional
+    @CacheResult(cacheName = "boleto")
 
     public void updateBoletoModel(BoletoModel boletoModel){
         if (boletoModel == null || boletoModel.getId() == null) {
@@ -61,6 +71,8 @@ public class BoletoService {
         boletoRepository.persist(existingBoletoModel);
     }
 
+    @Transactional
+    @CacheResult(cacheName = "boleto")
     public void deleteBoletoModelById(UUID id){
         boletoRepository.deleteById(id);
     }

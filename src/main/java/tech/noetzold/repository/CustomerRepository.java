@@ -16,4 +16,8 @@ public class CustomerRepository implements PanacheRepository<CustomerModel> {
     public void deleteById(UUID id) {
         delete("id", id);
     }
+
+    public Optional<CustomerModel> findByUserIdOptional(String userId) {
+        return find("userId", userId).firstResultOptional();
+    }
 }

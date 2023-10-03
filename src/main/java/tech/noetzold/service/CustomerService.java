@@ -27,6 +27,13 @@ public class CustomerService {
         return optionalCustomerModel.orElse(null);
     }
 
+    @CacheResult(cacheName = "customer")
+    @Transactional
+    public CustomerModel findCustomerModelByUserId(String id) {
+        Optional<CustomerModel> optionalCustomerModel = customerRepository.findByUserIdOptional(id);
+        return optionalCustomerModel.orElse(null);
+    }
+
     @Transactional
     @CacheInvalidateAll(cacheName = "customer")
     public void saveCustomerModel(CustomerModel customerModel){
@@ -60,5 +67,6 @@ public class CustomerService {
     public void deleteCustomerModelById(UUID id){
         customerRepository.deleteById(id);
     }
+
 
 }

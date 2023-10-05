@@ -66,7 +66,7 @@ public class CustomerController {
                 logger.error("Error to create Customer withou userId: " + customerModel.getId());
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
-            customerService.saveCustomerModel(customerModel);
+            quoteRequestEmitter.send(customerModel);
             logger.info("Create " + customerModel.getId());
             return Response.status(Response.Status.CREATED).entity(customerModel).build();
         } catch (Exception e) {
@@ -75,6 +75,26 @@ public class CustomerController {
         }
         logger.error("Error to create customerModel: " + customerModel.getId());
         return Response.status(Response.Status.BAD_REQUEST).entity(customerModel).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @RolesAllowed("admin")
+    public Response update(@PathParam("id") String id, CustomerModel updatedCustomerModel) {
+        if (!id.isBlank() || updatedCustomerModel == null) {
+            logger.warn("Error to update customerModel: " + id);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        CustomerModel existingCustomerModel = customerService.findCustomerModelById(UUID.fromString(id));
+        if (existingCustomerModel == null) {
+            logger.warn("Error to update customerModel: " + id);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        customerService.updateCustomerModel(updatedCustomerModel);
+
+        return Response.ok(updatedCustomerModel).build();
     }
 
 }

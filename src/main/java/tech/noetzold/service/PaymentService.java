@@ -64,4 +64,11 @@ public class PaymentService {
     public void deletePaymentModelById(UUID id){
         paymentRepository.deleteById(id);
     }
+
+    @Transactional
+    @CacheResult(cacheName = "payment")
+    public PaymentModel findPaymentModelByUserId(String userId) {
+        Optional<PaymentModel> optionalPaymentModel = paymentRepository.findByUserIdOptional(userId);
+        return optionalPaymentModel.orElse(null);
+    }
 }

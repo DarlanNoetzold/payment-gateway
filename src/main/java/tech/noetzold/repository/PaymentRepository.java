@@ -13,6 +13,10 @@ public class PaymentRepository implements PanacheRepository<PaymentModel> {
         return find("id", id).firstResultOptional();
     }
 
+    public Optional<PaymentModel> findByUserIdOptional(String userId) {
+        return find("customer_id", userId).firstResultOptional();
+    }
+
     public void deleteById(UUID id) {
         delete("id", id);
     }

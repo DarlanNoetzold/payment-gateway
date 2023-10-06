@@ -44,4 +44,18 @@ public class PaymentController {
         return Response.ok(paymentModel).build();
     }
 
+    @GET
+    @Path("/user/{user}")
+    @RolesAllowed("admin")
+    public Response findPaymentModelUserById(@PathParam("userId") String userId){
+        PaymentModel paymentModel = paymentService.findPaymentModelByUserId(userId);
+
+        if (paymentModel == null) {
+            logger.error("There is no payment with user id: " + userId);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(paymentModel).build();
+    }
+
 }

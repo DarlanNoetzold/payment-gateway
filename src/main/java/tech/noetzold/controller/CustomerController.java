@@ -80,8 +80,8 @@ public class CustomerController {
     @PUT
     @Path("/{id}")
     @RolesAllowed("admin")
-    public Response update(@PathParam("id") String id, CustomerModel updatedCustomerModel) {
-        if (!id.isBlank() || updatedCustomerModel == null) {
+    public Response updateCustomerModel(@PathParam("id") String id, CustomerModel updatedCustomerModel) {
+        if (id.isBlank() || updatedCustomerModel == null) {
             logger.warn("Error to update customerModel: " + id);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -95,6 +95,20 @@ public class CustomerController {
         customerService.updateCustomerModel(updatedCustomerModel);
 
         return Response.ok(updatedCustomerModel).build();
+    }
+
+    @DELETE
+    @RolesAllowed("admin")
+    public Response deleteCustomerModel(@PathParam("id") String id){
+        if (id.isBlank()) {
+            logger.warn("Error to delete customerModel: " + id);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        UUID uuid = UUID.fromString(id);
+
+        customerService.deleteCustomerModelById(uuid);
+
+        return Response.ok().build();
     }
 
 }

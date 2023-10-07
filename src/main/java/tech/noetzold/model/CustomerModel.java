@@ -29,15 +29,11 @@ public class CustomerModel {
     private Date bornDate;
 
     @OneToMany
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "transaction_id")
     private List<PaymentModel> transactions;
 
     @OneToMany
-    @JoinColumn(name = "customer_id")
-    private List<PaymentModel> transactionsWithError;
-
-    @OneToMany
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "card_id")
     private List<CardModel> cards;
 
 }

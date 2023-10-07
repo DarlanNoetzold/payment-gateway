@@ -18,7 +18,7 @@ public class CustomerConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomerConsumer.class);
 
-    @Incoming("alerts")
+    @Incoming("customers")
     @Blocking
     public CustomerModel process(CustomerModel incomingCustomerModel) {
         incomingCustomerModel.setRegisterDate(new Date());

@@ -1,6 +1,7 @@
 package tech.noetzold.consumer;
 
 import io.smallrye.reactive.messaging.annotations.Blocking;
+import io.smallrye.reactive.messaging.annotations.Merge;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -21,6 +22,7 @@ public class CustomerConsumer {
     private static final Logger logger = LoggerFactory.getLogger(CustomerConsumer.class);
 
     @Incoming("customers")
+    @Merge
     @Blocking
     public CustomerModel process(CustomerModel incomingCustomerModel) {
         incomingCustomerModel.setRegisterDate(new Date());

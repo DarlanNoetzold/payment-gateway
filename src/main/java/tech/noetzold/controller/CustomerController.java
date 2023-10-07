@@ -12,7 +12,6 @@ import org.jboss.logging.Logger;
 import tech.noetzold.model.CustomerModel;
 import tech.noetzold.service.CustomerService;
 
-import java.util.Base64;
 import java.util.UUID;
 
 @Path("/api/v1/customer")
@@ -66,6 +65,7 @@ public class CustomerController {
                 logger.error("Error to create Customer withou userId: " + customerModel.getId());
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
+            customerModel.setId(null);
             quoteRequestEmitter.send(customerModel);
             logger.info("Create " + customerModel.getId());
             return Response.status(Response.Status.CREATED).entity(customerModel).build();

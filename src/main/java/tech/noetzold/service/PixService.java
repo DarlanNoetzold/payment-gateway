@@ -30,8 +30,8 @@ public class PixService {
     @Transactional
     @CacheInvalidateAll(cacheName = "pix")
     public PixModel savePixModel(PixModel pixModel){
-        pixModel.setId(UUID.randomUUID());
         pixRepository.persist(pixModel);
+        pixRepository.flush();
         return pixModel;
     }
 

@@ -2,6 +2,7 @@ package tech.noetzold.consumer;
 
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import io.smallrye.reactive.messaging.annotations.Merge;
+import io.vertx.core.json.JsonObject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -44,37 +45,39 @@ public class PaymentConsumer {
     @Incoming("payments")
     @Merge
     @Blocking
-    public PaymentModel process(PaymentModel incomingPaymentMode) {
+    public PaymentModel process(JsonObject incomingPaymentModeInJson) {
 
-        CustomerModel customerModel = customerService.findCustomerModelByUserId(incomingPaymentMode.getCustomer().getUserId());
+        PaymentModel incomingPaymentModel = incomingPaymentModeInJson.mapTo(PaymentModel.class);
+
+        CustomerModel customerModel = customerService.findCustomerModelByUserId(incomingPaymentModel.getCustomer().getUserId());
 
         if (customerModel == null){
-            customerModel = customerService.saveCustomerModel(incomingPaymentMode.getCustomer());
+            customerModel = customerService.saveCustomerModel(incomingPaymentModel.getCustomer());
         }
 
-        if (incomingPaymentMode.getPaymentMethod().equals(PaymentMethod.PAYPAL)){
-            PaypalModel paypalModel = paypalService.savePaypalModel(incomingPaymentMode.getPaypalModel());
-            incomingPaymentMode.setPaypalModel(paypalModel);
-        } else if (incomingPaymentMode.getPaymentMethod().equals(PaymentMethod.DEBIT_CARD) || incomingPaymentMode.getPaymentMethod().equals(PaymentMethod.CREDIT_CARD)) {
-            CardModel cardModel = cardService.saveCardModel(incomingPaymentMode.getCardModel());
-            incomingPaymentMode.setCardModel(cardModel);
-        } else if (incomingPaymentMode.getPaymentMethod().equals(PaymentMethod.PIX)) {
-            PixModel pixModel = pixService.savePixModel(incomingPaymentMode.getPixModel());
-            incomingPaymentMode.setPixModel(pixModel);
-        } else if (incomingPaymentMode.getPaymentMethod().equals(PaymentMethod.BOLETO)) {
-            BoletoModel boletoModel = boletoService.saveBoletoModel(incomingPaymentMode.getBoletoModel());
-            incomingPaymentMode.setBoletoModel(boletoModel);
+        if (incomingPaymentModel.getPaymentMethod().equals(PaymentMethod.PAYPAL)){
+            PaypalModel paypalModel = paypalService.savePaypalModel(incomingPaymentModel.getPaypalModel());
+            incomingPaymentModel.setPaypalModel(paypalModel);
+        } else if (incomingPaymentModel.getPaymentMethod().equals(PaymentMethod.DEBIT_CARD) || incomingPaymentModel.getPaymentMethod().equals(PaymentMethod.CREDIT_CARD)) {
+            CardModel cardModel = cardService.saveCardModel(incomingPaymentModel.getCardModel());
+            incomingPaymentModel.setCardModel(cardModel);
+        } else if (incomingPaymentModel.getPaymentMethod().equals(PaymentMethod.PIX)) {
+            PixModel pixModel = pixService.savePixModel(incomingPaymentModel.getPixModel());
+            incomingPaymentModel.setPixModel(pixModel);
+        } else if (incomingPaymentModel.getPaymentMethod().equals(PaymentMethod.BOLETO)) {
+            BoletoModel boletoModel = boletoService.saveBoletoModel(incomingPaymentModel.getBoletoModel());
+            incomingPaymentModel.setBoletoModel(boletoModel);
         } else {
             logger.error("Lost message info.");
             return null;
         }
 
-        incomingPaymentMode.setCustomer(customerModel);
-        incomingPaymentMode.setRegisterDate(new Date());
-        paymentService.savePaymentModel(incomingPaymentMode);
-        logger.info("Create payments " + incomingPaymentMode.getId() + " for user " + incomingPaymentMode.getCustomer().getUserId() + ".");
+        incomingPaymentModel.setCustomer(customerModel);
+        incomingPaymentModel.setRegisterDate(new Date());
+        paymentService.savePaymentModel(incomingPaymentModel);
+        logger.info("Create payments " + incomingPaymentModel.getId() + " for user " + incomingPaymentModel.getCustomer().getUserId() + ".");
 
-        return incomingPaymentMode;
+        return incomingPaymentModel;
     }
 
 }

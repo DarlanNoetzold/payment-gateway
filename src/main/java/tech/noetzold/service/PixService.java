@@ -29,8 +29,10 @@ public class PixService {
 
     @Transactional
     @CacheInvalidateAll(cacheName = "pix")
-    public void savePixModel(PixModel pixModel){
+    public PixModel savePixModel(PixModel pixModel){
+        pixModel.setId(UUID.randomUUID());
         pixRepository.persist(pixModel);
+        return pixModel;
     }
 
     @Transactional

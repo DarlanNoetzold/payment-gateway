@@ -29,8 +29,10 @@ public class CardService {
 
     @Transactional
     @CacheInvalidateAll(cacheName = "card")
-    public void saveCardModel(CardModel cardModel){
+    public CardModel saveCardModel(CardModel cardModel){
+        cardModel.setId(UUID.randomUUID());
         cardRepository.persist(cardModel);
+        return cardModel;
     }
 
     @Transactional

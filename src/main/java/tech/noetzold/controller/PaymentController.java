@@ -75,6 +75,7 @@ public class PaymentController {
             paymentModel.setPixModel(null);
             paymentModel.setCardModel(null);
             paymentModel.setBoletoModel(null);
+            logger.info("Clean all payments, less Paypal");
         } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.BOLETO)) {
             if(paymentModel.getBoletoModel() == null) {
                 logger.error("Boleto PaymentMethod is null");
@@ -83,6 +84,7 @@ public class PaymentController {
             paymentModel.setPixModel(null);
             paymentModel.setCardModel(null);
             paymentModel.setPaypalModel(null);
+            logger.info("Clean all payments, less Boleto");
         } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.PIX)) {
             if(paymentModel.getPixModel() == null) {
                 logger.error("Pix PaymentMethod is null");
@@ -91,6 +93,7 @@ public class PaymentController {
             paymentModel.setPaypalModel(null);
             paymentModel.setCardModel(null);
             paymentModel.setBoletoModel(null);
+            logger.info("Clean all payments, less Pix");
         } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.CREDIT_CARD)) {
             if(paymentModel.getCardModel() == null) {
                 logger.error("Card PaymentMethod is null");
@@ -99,6 +102,7 @@ public class PaymentController {
             paymentModel.setPixModel(null);
             paymentModel.setPaypalModel(null);
             paymentModel.setBoletoModel(null);
+            logger.info("Clean all payments, less Card");
         } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.DEBIT_CARD)) {
             if(paymentModel.getCardModel() == null) {
                 logger.error("Card PaymentMethod is null");
@@ -107,6 +111,7 @@ public class PaymentController {
             paymentModel.setPixModel(null);
             paymentModel.setPaypalModel(null);
             paymentModel.setBoletoModel(null);
+            logger.info("Clean all payments, less Card");
         }
 
         paymentModel.setId(UUID.randomUUID());

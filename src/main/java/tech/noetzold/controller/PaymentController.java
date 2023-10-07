@@ -76,7 +76,7 @@ public class PaymentController {
     @Path("/{id}")
     @RolesAllowed("admin")
     public Response update(@PathParam("id") String id, PaymentModel paymentModel) {
-        if (id == null || paymentModel == null) {
+        if (id.isBlank() || paymentModel == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
@@ -93,10 +93,14 @@ public class PaymentController {
     @DELETE
     @Path("/{id}")
     @RolesAllowed("admin")
-    public Response remove(@PathParam("id") String id) {
+    public Response deletePaymentModel(@PathParam("id") String id) {
+        if (id.isBlank()) {
+            logger.warn("Error to delete Payment: " + id);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         paymentService.deletePaymentModelById(UUID.fromString(id));
-        logger.info("Remove MaliciousProcess: " + id);
-        return Response.status(Response.Status.ACCEPTED).entity("MaliciousProcess removed").build();
+        logger.info("Remove Payment: " + id);
+        return Response.status(Response.Status.ACCEPTED).entity("Payment removed").build();
     }
 
 }

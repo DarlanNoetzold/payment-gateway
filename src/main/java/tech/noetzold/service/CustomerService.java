@@ -35,8 +35,10 @@ public class CustomerService {
 
     @Transactional
     @CacheInvalidateAll(cacheName = "customer")
-    public void saveCustomerModel(CustomerModel customerModel){
+    public CustomerModel saveCustomerModel(CustomerModel customerModel){
+        customerModel.setId(UUID.randomUUID());
         customerRepository.persist(customerModel);
+        return customerModel;
     }
 
     @Transactional

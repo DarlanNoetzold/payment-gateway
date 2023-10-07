@@ -30,8 +30,8 @@ public class PaypalService {
     @Transactional
     @CacheInvalidateAll(cacheName = "paypal")
     public PaypalModel savePaypalModel(PaypalModel paypalModel){
-        paypalModel.setId(UUID.randomUUID());
         paypalRepository.persist(paypalModel);
+        paypalRepository.flush();
         return paypalModel;
     }
 

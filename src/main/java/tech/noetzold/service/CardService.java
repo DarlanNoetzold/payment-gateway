@@ -30,8 +30,8 @@ public class CardService {
     @Transactional
     @CacheInvalidateAll(cacheName = "card")
     public CardModel saveCardModel(CardModel cardModel){
-        cardModel.setId(UUID.randomUUID());
         cardRepository.persist(cardModel);
+        cardRepository.flush();
         return cardModel;
     }
 

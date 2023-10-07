@@ -30,8 +30,8 @@ public class BoletoService {
     @Transactional
     @CacheInvalidateAll(cacheName = "boleto")
     public BoletoModel saveBoletoModel(BoletoModel boletoModel){
-        boletoModel.setId(UUID.randomUUID());
         boletoRepository.persist(boletoModel);
+        boletoRepository.flush();
         return boletoModel;
     }
 

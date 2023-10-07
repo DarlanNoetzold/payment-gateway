@@ -1,0 +1,43 @@
+2023-10-06 23:54:46,012 hal9000 payment-gateway-dev.jar[20428] WARN  [io.qua.config] (Quarkus Main Thread) Unrecognized configuration key "quarkus.log.console.json" was provided; it will be ignored; verify that the dependency extension for this configuration is set or that you did not make a typo
+2023-10-06 23:54:46,012 hal9000 payment-gateway-dev.jar[20428] WARN  [io.qua.config] (Quarkus Main Thread) Unrecognized configuration key "quarkus.log.console.json.pretty-print" was provided; it will be ignored; verify that the dependency extension for this configuration is set or that you did not make a typo
+2023-10-06 23:54:46,616 hal9000 payment-gateway-dev.jar[20428] ERROR [io.qua.run.boo.StartupActionImpl] (Quarkus Main Thread) Error running Quarkus: java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at io.quarkus.runner.bootstrap.StartupActionImpl$1.run(StartupActionImpl.java:113)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: java.lang.ExceptionInInitializerError
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+	at io.quarkus.runtime.Quarkus.run(Quarkus.java:70)
+	at io.quarkus.runtime.Quarkus.run(Quarkus.java:44)
+	at io.quarkus.runtime.Quarkus.run(Quarkus.java:124)
+	at io.quarkus.runner.GeneratedMain.main(Unknown Source)
+	... 6 more
+Caused by: java.lang.RuntimeException: Failed to start quarkus
+	at io.quarkus.runner.ApplicationImpl.<clinit>(Unknown Source)
+	... 15 more
+Caused by: org.hibernate.MappingException: Column 'customer_id' is duplicated in mapping for entity 'tech.noetzold.model.PaymentModel' (use '@Column(insertable=false, updatable=false)' when mapping multiple properties to the same column)
+	at org.hibernate.mapping.Value.checkColumnDuplication(Value.java:203)
+	at org.hibernate.mapping.MappingHelper.checkPropertyColumnDuplication(MappingHelper.java:249)
+	at org.hibernate.mapping.PersistentClass.checkColumnDuplication(PersistentClass.java:1071)
+	at org.hibernate.mapping.PersistentClass.validate(PersistentClass.java:755)
+	at org.hibernate.mapping.RootClass.validate(RootClass.java:288)
+	at org.hibernate.boot.internal.MetadataImpl.validate(MetadataImpl.java:497)
+	at io.quarkus.hibernate.orm.runtime.recording.PrevalidatedQuarkusMetadata.validateAndWrap(PrevalidatedQuarkusMetadata.java:60)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootMetadataBuilder.trimBootstrapMetadata(FastBootMetadataBuilder.java:463)
+	at io.quarkus.hibernate.orm.runtime.boot.FastBootMetadataBuilder.build(FastBootMetadataBuilder.java:423)
+	at io.quarkus.hibernate.orm.runtime.PersistenceUnitsHolder.createMetadata(PersistenceUnitsHolder.java:101)
+	at io.quarkus.hibernate.orm.runtime.PersistenceUnitsHolder.constructMetadataAdvance(PersistenceUnitsHolder.java:73)
+	at io.quarkus.hibernate.orm.runtime.PersistenceUnitsHolder.initializeJpa(PersistenceUnitsHolder.java:40)
+	at io.quarkus.hibernate.orm.runtime.HibernateOrmRecorder$1.created(HibernateOrmRecorder.java:78)
+	at io.quarkus.arc.runtime.ArcRecorder.initBeanContainer(ArcRecorder.java:79)
+	at io.quarkus.deployment.steps.ArcProcessor$generateResources844392269.deploy_0(Unknown Source)
+	at io.quarkus.deployment.steps.ArcProcessor$generateResources844392269.deploy(Unknown Source)
+	... 16 more
+
+2023-10-06 23:54:46,653 hal9000 payment-gateway-dev.jar[20428] INFO  [io.qua.dep.dev.IsolatedDevModeMain] (main) Attempting to start live reload endpoint to recover from previous Quarkus startup failure

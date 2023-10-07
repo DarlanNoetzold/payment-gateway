@@ -8,7 +8,6 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import tech.noetzold.model.CustomerModel;
-import tech.noetzold.model.paymentMethods.CardModel;
 import tech.noetzold.repository.CustomerRepository;
 
 import java.util.Optional;
@@ -57,7 +56,6 @@ public class CustomerService {
         existingCustomerModel.setTransactions(customerModel.getTransactions());
         existingCustomerModel.setUserId(customerModel.getUserId());
         existingCustomerModel.setRegisterDate(customerModel.getRegisterDate());
-        existingCustomerModel.setTransactionsWithError(customerModel.getTransactionsWithError());
 
         customerRepository.persist(existingCustomerModel);
     }

@@ -26,7 +26,6 @@ public class CustomerService {
         return optionalCustomerModel.orElse(null);
     }
 
-    @CacheResult(cacheName = "customer")
     @Transactional
     public CustomerModel findCustomerModelByUserId(String id) {
         Optional<CustomerModel> optionalCustomerModel = customerRepository.findByUserIdOptional(id);
@@ -36,8 +35,8 @@ public class CustomerService {
     @Transactional
     @CacheInvalidateAll(cacheName = "customer")
     public CustomerModel saveCustomerModel(CustomerModel customerModel){
-        customerModel.setId(UUID.randomUUID());
         customerRepository.persist(customerModel);
+        customerRepository.flush();
         return customerModel;
     }
 

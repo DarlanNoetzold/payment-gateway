@@ -11,6 +11,7 @@ import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.jboss.logging.Logger;
 import tech.noetzold.model.CustomerModel;
 import tech.noetzold.model.PaymentModel;
+import tech.noetzold.model.enums.PaymentMethod;
 import tech.noetzold.service.PaymentService;
 
 import java.util.Date;
@@ -62,6 +63,51 @@ public class PaymentController {
     @POST
     @RolesAllowed("admin")
     public Response savePaymentModel(PaymentModel paymentModel){
+
+        if(paymentModel.getPaymentMethod() == null){
+            logger.error("PaymentMethod is null");
+            return Response.status(Response.Status.BAD_REQUEST).entity("PaymentMethod needs to be filled.").build();
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.PAYPAL)) {
+            if(paymentModel.getPaypalModel() == null) {
+                logger.error("Paypal PaymentMethod is null");
+                return Response.status(Response.Status.BAD_REQUEST).entity("PAYPAL needs to be filled for this PaymentMethod.").build();
+            }
+            paymentModel.setPixModel(null);
+            paymentModel.setCardModel(null);
+            paymentModel.setBoletoModel(null);
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.BOLETO)) {
+            if(paymentModel.getBoletoModel() == null) {
+                logger.error("Boleto PaymentMethod is null");
+                return Response.status(Response.Status.BAD_REQUEST).entity("BOLETO needs to be filled for this PaymentMethod.").build();
+            }
+            paymentModel.setPixModel(null);
+            paymentModel.setCardModel(null);
+            paymentModel.setPaypalModel(null);
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.PIX)) {
+            if(paymentModel.getPixModel() == null) {
+                logger.error("Pix PaymentMethod is null");
+                return Response.status(Response.Status.BAD_REQUEST).entity("PIX needs to be filled for this PaymentMethod.").build();
+            }
+            paymentModel.setPaypalModel(null);
+            paymentModel.setCardModel(null);
+            paymentModel.setBoletoModel(null);
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.CREDIT_CARD)) {
+            if(paymentModel.getCardModel() == null) {
+                logger.error("Card PaymentMethod is null");
+                return Response.status(Response.Status.BAD_REQUEST).entity("CARD needs to be filled for this PaymentMethod.").build();
+            }
+            paymentModel.setPixModel(null);
+            paymentModel.setPaypalModel(null);
+            paymentModel.setBoletoModel(null);
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.DEBIT_CARD)) {
+            if(paymentModel.getCardModel() == null) {
+                logger.error("Card PaymentMethod is null");
+                return Response.status(Response.Status.BAD_REQUEST).entity("CARD needs to be filled for this PaymentMethod.").build();
+            }
+            paymentModel.setPixModel(null);
+            paymentModel.setPaypalModel(null);
+            paymentModel.setBoletoModel(null);
+        }
 
         paymentModel.setId(UUID.randomUUID());
         paymentModel.setRegisterDate(new Date());

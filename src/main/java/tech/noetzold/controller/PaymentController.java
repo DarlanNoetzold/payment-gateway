@@ -13,6 +13,7 @@ import tech.noetzold.model.CustomerModel;
 import tech.noetzold.model.PaymentModel;
 import tech.noetzold.service.PaymentService;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Path("/api/v1/payment")
@@ -23,8 +24,8 @@ public class PaymentController {
     @Inject
     PaymentService paymentService;
 
-    @Channel("customers")
-    Emitter<CustomerModel> quoteRequestEmitter;
+    @Channel("payments")
+    Emitter<PaymentModel> quoteRequestEmitter;
 
     private static final Logger logger = Logger.getLogger(CustomerController.class);
 
@@ -56,6 +57,46 @@ public class PaymentController {
         }
 
         return Response.ok(paymentModel).build();
+    }
+
+    @POST
+    @RolesAllowed("admin")
+    public Response savePaymentModel(PaymentModel paymentModel){
+
+        paymentModel.setId(UUID.randomUUID());
+        paymentModel.setRegisterDate(new Date());
+
+        quoteRequestEmitter.send(paymentModel);
+        logger.info("Payment message sended");
+
+        return Response.ok(paymentModel).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @RolesAllowed("admin")
+    public Response update(@PathParam("id") String id, PaymentModel paymentModel) {
+        if (id == null || paymentModel == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        PaymentModel existingPaymentModel = paymentService.findPaymentModelById(UUID.fromString(id));
+        if (existingPaymentModel == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        paymentService.updatePaymentModel(paymentModel);
+
+        return Response.ok(paymentModel).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @RolesAllowed("admin")
+    public Response remove(@PathParam("id") String id) {
+        paymentService.deletePaymentModelById(UUID.fromString(id));
+        logger.info("Remove MaliciousProcess: " + id);
+        return Response.status(Response.Status.ACCEPTED).entity("MaliciousProcess removed").build();
     }
 
 }

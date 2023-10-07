@@ -11,6 +11,7 @@ import tech.noetzold.model.paymentMethods.CardModel;
 import tech.noetzold.model.paymentMethods.PaypalModel;
 import tech.noetzold.model.paymentMethods.PixModel;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -33,6 +34,7 @@ public class PaymentModel {
     private boolean hasErrors;
     @NotNull
     private double totalAmount;
+    private Date registerDate;
     private double dicountAmount;
     @ManyToOne
     @JoinColumn(name = "customer_id")

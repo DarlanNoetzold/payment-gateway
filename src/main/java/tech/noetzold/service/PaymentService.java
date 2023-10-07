@@ -30,8 +30,10 @@ public class PaymentService {
 
     @Transactional
     @CacheInvalidateAll(cacheName = "payment")
-    public void savePaymentModel(PaymentModel paymentModel){
+    public PaymentModel savePaymentModel(PaymentModel paymentModel){
         paymentRepository.persist(paymentModel);
+        paymentRepository.flush();
+        return paymentModel;
     }
 
     @Transactional

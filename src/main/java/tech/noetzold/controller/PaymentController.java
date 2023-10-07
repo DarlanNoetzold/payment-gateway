@@ -12,6 +12,7 @@ import org.jboss.logging.Logger;
 import tech.noetzold.model.CustomerModel;
 import tech.noetzold.model.PaymentModel;
 import tech.noetzold.model.enums.PaymentMethod;
+import tech.noetzold.service.CustomerService;
 import tech.noetzold.service.PaymentService;
 
 import java.util.Date;
@@ -25,7 +26,10 @@ public class PaymentController {
     @Inject
     PaymentService paymentService;
 
-    @Channel("payments")
+    @Inject
+    CustomerService customerService;
+
+    @Channel("payments-out")
     Emitter<PaymentModel> quoteRequestEmitter;
 
     private static final Logger logger = Logger.getLogger(CustomerController.class);
@@ -114,7 +118,6 @@ public class PaymentController {
             logger.info("Clean all payments, less Card");
         }
 
-        paymentModel.setId(UUID.randomUUID());
         paymentModel.setRegisterDate(new Date());
 
         quoteRequestEmitter.send(paymentModel);

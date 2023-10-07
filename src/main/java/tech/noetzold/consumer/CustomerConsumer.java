@@ -1,6 +1,7 @@
 package tech.noetzold.consumer;
 
 import io.smallrye.reactive.messaging.annotations.Blocking;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import tech.noetzold.service.CustomerService;
 
 import java.util.Date;
 
+@ApplicationScoped
 public class CustomerConsumer {
 
     @Inject

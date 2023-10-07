@@ -1,5 +1,6 @@
 package tech.noetzold.service;
 
+import io.quarkus.cache.CacheInvalidateAll;
 import io.quarkus.cache.CacheResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -27,15 +28,13 @@ public class BoletoService {
     }
 
     @Transactional
-    @CacheResult(cacheName = "boleto")
-
+    @CacheInvalidateAll(cacheName = "boleto")
     public void saveBoletoModel(BoletoModel boletoModel){
         boletoRepository.persist(boletoModel);
     }
 
     @Transactional
-    @CacheResult(cacheName = "boleto")
-
+    @CacheInvalidateAll(cacheName = "boleto")
     public void updateBoletoModel(BoletoModel boletoModel){
         if (boletoModel == null || boletoModel.getId() == null) {
             throw new WebApplicationException("Invalid data for boletoModel update", Response.Status.BAD_REQUEST);
@@ -72,7 +71,7 @@ public class BoletoService {
     }
 
     @Transactional
-    @CacheResult(cacheName = "boleto")
+    @CacheInvalidateAll(cacheName = "boleto")
     public void deleteBoletoModelById(UUID id){
         boletoRepository.deleteById(id);
     }

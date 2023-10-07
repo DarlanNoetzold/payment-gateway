@@ -37,7 +37,7 @@ public class PaymentModel {
     private Date registerDate;
     private double dicountAmount;
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "boleto_model_id")
     private BoletoModel boletoModel;
     @ManyToOne
     @JoinColumn(name = "card_model_id")

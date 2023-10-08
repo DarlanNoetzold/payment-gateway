@@ -38,11 +38,11 @@ public class InvoiceService {
     @Transactional
     @CacheInvalidateAll(cacheName = "invoice")
     public void updateInvoice(InvoiceModel invoiceModel) {
-        if (invoiceModel == null || invoiceModel.getId() == null) {
+        if (invoiceModel == null || invoiceModel.getInvoiceId() == null) {
             throw new WebApplicationException("Invalid data for invoice update", Response.Status.BAD_REQUEST);
         }
 
-        InvoiceModel existingInvoice = findInvoiceById(invoiceModel.getId());
+        InvoiceModel existingInvoice = findInvoiceById(invoiceModel.getInvoiceId());
         if (existingInvoice == null) {
             throw new WebApplicationException("Invoice not found", Response.Status.NOT_FOUND);
         }

@@ -7,6 +7,7 @@
 * Message Broker RabbitMQ;
 * Cache with Redis;
 * PostgreSQL Database;
+* Docker for CI/CD;
 * Keycloak for Authorization and Authetication.
 
 ## Projeto

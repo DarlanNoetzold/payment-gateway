@@ -29,7 +29,7 @@ public class PaymentController {
     @Channel("payments-out")
     Emitter<PaymentModel> quoteRequestEmitter;
 
-    private static final Logger logger = Logger.getLogger(CustomerController.class);
+    private static final Logger logger = Logger.getLogger(PaymentController.class);
 
     @GET
     @Path("/{id}")

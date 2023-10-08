@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.wildfly.common.annotation.NotNull;
 import tech.noetzold.model.enums.PaymentMethod;
+import tech.noetzold.model.enums.PaymentState;
 import tech.noetzold.model.paymentMethods.BoletoModel;
 import tech.noetzold.model.paymentMethods.CardModel;
 import tech.noetzold.model.paymentMethods.PaypalModel;
@@ -32,6 +33,9 @@ public class PaymentModel {
 
     @NotNull
     private PaymentMethod paymentMethod;
+
+    @NotNull
+    private PaymentState paymentState;
 
     @NotNull
     private boolean hasErrors;

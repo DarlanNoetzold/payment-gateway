@@ -17,7 +17,7 @@ public class InvoiceConsumer {
     @Inject
     InvoiceService invoiceService;
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomerConsumer.class);
+    private static final Logger logger = LoggerFactory.getLogger(InvoiceConsumer.class);
 
     @Incoming("invoicers")
     @Merge
@@ -27,7 +27,7 @@ public class InvoiceConsumer {
         InvoiceModel incomingInvoiceModel = incomingInvoiceModelInJson.mapTo(InvoiceModel.class);
 
         invoiceService.saveInvoice(incomingInvoiceModel);
-        logger.info("Create Customer " + incomingInvoiceModel.getInvoiceId() + " for payment " + incomingInvoiceModel.getPayment().getPaymentId() + ".");
+        logger.info("Create Invoice " + incomingInvoiceModel.getInvoiceId() + " for payment " + incomingInvoiceModel.getPayment().getPaymentId() + ".");
 
         return incomingInvoiceModel;
     }

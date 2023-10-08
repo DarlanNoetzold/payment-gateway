@@ -26,9 +26,6 @@ public class PaymentController {
     @Inject
     PaymentService paymentService;
 
-    @Inject
-    CustomerService customerService;
-
     @Channel("payments-out")
     Emitter<PaymentModel> quoteRequestEmitter;
 

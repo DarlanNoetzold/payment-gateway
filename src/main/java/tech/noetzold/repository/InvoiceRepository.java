@@ -17,7 +17,7 @@ public class InvoiceRepository implements PanacheRepository<InvoiceModel> {
         return find("id", id).firstResultOptional();
     }
 
-    public List<InvoiceModel> findByPaymentId(String paymentId) {
+    public List<InvoiceModel> findByPaymentId(UUID paymentId) {
         return find("payment", paymentId).list();
     }
 

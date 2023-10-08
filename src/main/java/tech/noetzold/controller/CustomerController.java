@@ -63,18 +63,18 @@ public class CustomerController {
     public Response saveCustomerModel(CustomerModel customerModel){
         try {
             if (customerModel.getUserId() == null) {
-                logger.error("Error to create Customer withou userId: " + customerModel.getId());
+                logger.error("Error to create Customer withou userId: " + customerModel.getCustomerId());
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
-            customerModel.setId(null);
+            customerModel.setCustomerId(null);
             quoteRequestEmitter.send(customerModel);
-            logger.info("Create " + customerModel.getId());
+            logger.info("Create " + customerModel.getCustomerId());
             return Response.status(Response.Status.CREATED).entity(customerModel).build();
         } catch (Exception e) {
-            logger.error("Error to create customerModel: " + customerModel.getId());
+            logger.error("Error to create customerModel: " + customerModel.getCustomerId());
             e.printStackTrace();
         }
-        logger.error("Error to create customerModel: " + customerModel.getId());
+        logger.error("Error to create customerModel: " + customerModel.getCustomerId());
         return Response.status(Response.Status.BAD_REQUEST).entity(customerModel).build();
     }
 

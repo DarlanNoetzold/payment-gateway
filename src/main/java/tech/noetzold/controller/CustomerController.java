@@ -28,6 +28,7 @@ public class CustomerController {
     private static final Logger logger = Logger.getLogger(CustomerController.class);
 
     @GET
+    @Path("/{id}")
     @RolesAllowed("admin")
     public Response getCustomerModelByUserId(@PathParam("id") String id){
 
@@ -42,7 +43,7 @@ public class CustomerController {
     }
 
     @GET
-    @Path("/paymentId")
+    @Path("/paymentId/{id}")
     @RolesAllowed("admin")
     public Response getCustomerModelById(@PathParam("id") String id){
         UUID uuid = UUID.fromString(id);

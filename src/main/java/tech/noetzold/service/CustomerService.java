@@ -43,11 +43,11 @@ public class CustomerService {
     @Transactional
     @CacheInvalidateAll(cacheName = "customer")
     public void updateCustomerModel(CustomerModel customerModel){
-        if (customerModel == null || customerModel.getId() == null) {
+        if (customerModel == null || customerModel.getCustomerId() == null) {
             throw new WebApplicationException("Invalid data for customerModel update", Response.Status.BAD_REQUEST);
         }
 
-        CustomerModel existingCustomerModel = findCustomerModelById(customerModel.getId());
+        CustomerModel existingCustomerModel = findCustomerModelById(customerModel.getCustomerId());
         if (existingCustomerModel == null) {
             throw new WebApplicationException("customerModel not found", Response.Status.NOT_FOUND);
         }

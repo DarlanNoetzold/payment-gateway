@@ -12,6 +12,7 @@ import tech.noetzold.model.paymentMethods.PaypalModel;
 import tech.noetzold.model.paymentMethods.PixModel;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -22,32 +23,44 @@ public class PaymentModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID paymentId;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerModel customer;
+
     @NotNull
     private PaymentMethod paymentMethod;
+
     @NotNull
     private boolean hasErrors;
+
     @NotNull
     private double totalAmount;
+
     private Date registerDate;
+
     private double dicountAmount;
+
     @ManyToOne
     @JoinColumn(name = "boleto_model_id")
     private BoletoModel boletoModel;
+
     @ManyToOne
     @JoinColumn(name = "card_model_id")
     private CardModel cardModel;
+
     @ManyToOne
     @JoinColumn(name = "pix_model_id")
     private PixModel pixModel;
+
     @ManyToOne
     @JoinColumn(name = "paypal_model_id")
     private PaypalModel paypalModel;
+
+    @OneToMany(mappedBy = "payment")
+    private List<InvoiceModel> invoices;
 
 
 }

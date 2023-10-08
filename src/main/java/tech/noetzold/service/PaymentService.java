@@ -8,7 +8,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
-import tech.noetzold.model.CustomerModel;
 import tech.noetzold.model.PaymentModel;
 import tech.noetzold.repository.PaymentRepository;
 
@@ -39,11 +38,11 @@ public class PaymentService {
     @Transactional
     @CacheInvalidateAll(cacheName = "payment")
     public void updatePaymentModel(PaymentModel paymentModel){
-        if (paymentModel == null || paymentModel.getId() == null) {
+        if (paymentModel == null || paymentModel.getPaymentId() == null) {
             throw new WebApplicationException("Invalid data for paymentModel update", Response.Status.BAD_REQUEST);
         }
 
-        PaymentModel existingPaymentModel = findPaymentModelById(paymentModel.getId());
+        PaymentModel existingPaymentModel = findPaymentModelById(paymentModel.getPaymentId());
         if (existingPaymentModel == null) {
             throw new WebApplicationException("customerModel not found", Response.Status.NOT_FOUND);
         }

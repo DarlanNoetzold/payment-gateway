@@ -9,7 +9,6 @@ import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.jboss.logging.Logger;
 import tech.noetzold.model.InvoiceModel;
-import tech.noetzold.model.PaymentModel;
 import tech.noetzold.service.InvoiceService;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class InvoiceController {
     InvoiceService invoiceService;
 
     @Channel("invoicers-out")
-    Emitter<PaymentModel> quoteRequestEmitter;
+    Emitter<InvoiceModel> quoteRequestEmitter;
 
     private static final Logger logger = Logger.getLogger(InvoiceController.class);
 
@@ -56,6 +55,60 @@ public class InvoiceController {
         }
 
         return Response.ok(invoicesModels).build();
+    }
+
+    @POST
+    @RolesAllowed("admin")
+    public Response saveInvoiceModel(InvoiceModel invoiceModel){
+        try {
+            if (invoiceModel.getInvoiceNumber() == null) {
+                logger.error("Error to create Customer without invoice number.");
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            }
+            invoiceModel.setInvoiceId(null);
+            quoteRequestEmitter.send(invoiceModel);
+            logger.info("Create " + invoiceModel. getInvoiceNumber());
+            return Response.status(Response.Status.CREATED).entity(invoiceModel).build();
+        } catch (Exception e) {
+            logger.error("Error to create invoiceModel: " + invoiceModel. getInvoiceNumber());
+            e.printStackTrace();
+        }
+        logger.error("Error to create invoiceModel: " + invoiceModel. getInvoiceNumber());
+        return Response.status(Response.Status.BAD_REQUEST).entity(invoiceModel).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @RolesAllowed("admin")
+    public Response updateCustomerModel(@PathParam("id") String id, InvoiceModel invoiceModel) {
+        if (id.isBlank() || invoiceModel == null) {
+            logger.warn("Error to update invoiceModel: " + id);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        InvoiceModel existingInvoiceModel = invoiceService.findInvoiceById(UUID.fromString(id));
+        if (existingInvoiceModel == null) {
+            logger.warn("Error to update invoiceModel: " + id);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        invoiceService.updateInvoice(invoiceModel);
+
+        return Response.ok(invoiceModel).build();
+    }
+
+    @DELETE
+    @RolesAllowed("admin")
+    public Response deleteCustomerModel(@PathParam("id") String id){
+        if (id.isBlank()) {
+            logger.warn("Error to delete invoiceModel: " + id);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        UUID uuid = UUID.fromString(id);
+
+        invoiceService.deleteInvoiceById(uuid);
+
+        return Response.ok().build();
     }
 
 }

@@ -75,7 +75,7 @@ public class PaymentConsumer {
         incomingPaymentModel.setCustomer(customerModel);
         incomingPaymentModel.setRegisterDate(new Date());
         paymentService.savePaymentModel(incomingPaymentModel);
-        logger.info("Create payments " + incomingPaymentModel.getId() + " for user " + incomingPaymentModel.getCustomer().getUserId() + ".");
+        logger.info("Create payments " + incomingPaymentModel.getPaymentId() + " for user " + incomingPaymentModel.getCustomer().getUserId() + ".");
 
         return incomingPaymentModel;
     }

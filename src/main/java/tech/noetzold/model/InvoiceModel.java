@@ -18,7 +18,7 @@ public class InvoiceModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID invoiceId;
 
     @NotNull
     @ManyToOne

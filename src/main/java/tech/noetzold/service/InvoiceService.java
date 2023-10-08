@@ -63,7 +63,7 @@ public class InvoiceService {
 
     @Transactional
     @CacheResult(cacheName = "invoice")
-    public List<InvoiceModel> findInvoicesByPaymentId(String paymentId) {
+    public List<InvoiceModel> findInvoicesByPaymentId(UUID paymentId) {
         return invoiceRepository.findByPaymentId(paymentId);
     }
 }

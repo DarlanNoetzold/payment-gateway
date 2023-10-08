@@ -2,6 +2,7 @@ package tech.noetzold.consumer;
 
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import io.smallrye.reactive.messaging.annotations.Merge;
+import io.vertx.core.json.JsonObject;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -18,16 +19,18 @@ public class CustomerConsumer {
     @Inject
     CustomerService customerService;
 
-
     private static final Logger logger = LoggerFactory.getLogger(CustomerConsumer.class);
 
     @Incoming("customers")
     @Merge
     @Blocking
-    public CustomerModel process(CustomerModel incomingCustomerModel) {
+    public CustomerModel process(JsonObject incomingCustomerModelInJson) {
+
+        CustomerModel incomingCustomerModel = incomingCustomerModelInJson.mapTo(CustomerModel.class);
+
         incomingCustomerModel.setRegisterDate(new Date());
         customerService.saveCustomerModel(incomingCustomerModel);
-        logger.info("Create Customer " + incomingCustomerModel.getId() + " for user " + incomingCustomerModel.getUserId() + ".");
+        logger.info("Create Customer " + incomingCustomerModel.getCustomerId() + " for user " + incomingCustomerModel.getUserId() + ".");
 
         return incomingCustomerModel;
     }

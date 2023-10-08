@@ -19,7 +19,7 @@ public class CustomerModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID customerId;
 
     @NotNull
     private String userId;

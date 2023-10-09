@@ -43,6 +43,9 @@ public class PaymentModel {
     @NotNull
     private double totalAmount;
 
+    @NotNull
+    private String orderId;
+
     private Date registerDate;
 
     private double dicountAmount;

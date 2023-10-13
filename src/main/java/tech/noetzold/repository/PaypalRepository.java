@@ -10,10 +10,10 @@ import java.util.UUID;
 @ApplicationScoped
 public class PaypalRepository implements PanacheRepository<PaypalModel> {
     public Optional<PaypalModel> findByIdOptional(UUID id) {
-        return find("id", id).firstResultOptional();
+        return find("paypalId", id).firstResultOptional();
     }
 
     public void deleteById(UUID id) {
-        delete("id", id);
+        delete("paypalId", id);
     }
 }

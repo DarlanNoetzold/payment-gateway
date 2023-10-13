@@ -11,10 +11,10 @@ import java.util.UUID;
 @ApplicationScoped
 public class CardRepository implements PanacheRepository<CardModel> {
     public Optional<CardModel> findByIdOptional(UUID id) {
-        return find("id", id).firstResultOptional();
+        return find("cardId", id).firstResultOptional();
     }
 
     public void deleteById(UUID id) {
-        delete("id", id);
+        delete("cardId", id);
     }
 }

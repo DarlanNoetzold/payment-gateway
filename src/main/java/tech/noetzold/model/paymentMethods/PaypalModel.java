@@ -18,7 +18,7 @@ public class PaypalModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID paypalId;
     private String email;
     private String descricao;
     private String identificadorTransacao;

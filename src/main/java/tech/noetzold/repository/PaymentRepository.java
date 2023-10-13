@@ -10,7 +10,7 @@ import java.util.UUID;
 @ApplicationScoped
 public class PaymentRepository implements PanacheRepository<PaymentModel> {
     public Optional<PaymentModel> findByIdOptional(UUID id) {
-        return find("id", id).firstResultOptional();
+        return find("paymentId", id).firstResultOptional();
     }
 
     public Optional<PaymentModel> findByUserIdOptional(String userId) {
@@ -18,6 +18,6 @@ public class PaymentRepository implements PanacheRepository<PaymentModel> {
     }
 
     public void deleteById(UUID id) {
-        delete("id", id);
+        delete("paymentId", id);
     }
 }

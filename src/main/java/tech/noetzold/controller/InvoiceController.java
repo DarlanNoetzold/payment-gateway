@@ -14,7 +14,7 @@ import tech.noetzold.service.InvoiceService;
 import java.util.List;
 import java.util.UUID;
 
-@Path("/api/v1/invoice")
+@Path("/api/payment/v1/invoice")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class InvoiceController {

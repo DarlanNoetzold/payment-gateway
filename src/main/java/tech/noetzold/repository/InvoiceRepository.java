@@ -14,7 +14,7 @@ import java.util.UUID;
 public class InvoiceRepository implements PanacheRepository<InvoiceModel> {
 
     public Optional<InvoiceModel> findByIdOptional(UUID id) {
-        return find("id", id).firstResultOptional();
+        return find("invoiceId", id).firstResultOptional();
     }
 
     public List<InvoiceModel> findByPaymentId(UUID paymentId) {
@@ -22,6 +22,6 @@ public class InvoiceRepository implements PanacheRepository<InvoiceModel> {
     }
 
     public void deleteById(UUID id) {
-        delete("id", id);
+        delete("invoiceId", id);
     }
 }

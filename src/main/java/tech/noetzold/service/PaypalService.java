@@ -38,11 +38,11 @@ public class PaypalService {
     @Transactional
     @CacheInvalidateAll(cacheName = "paypal")
     public void updatePaypalModel(PaypalModel paypalModel){
-        if (paypalModel == null || paypalModel.getId() == null) {
+        if (paypalModel == null || paypalModel.getPaypalId() == null) {
             throw new WebApplicationException("Invalid data for paypalModel update", Response.Status.BAD_REQUEST);
         }
 
-        PaypalModel existingPaypalModel = findPaypalModelById(paypalModel.getId());
+        PaypalModel existingPaypalModel = findPaypalModelById(paypalModel.getPaypalId());
         if (existingPaypalModel == null) {
             throw new WebApplicationException("customerModel not found", Response.Status.NOT_FOUND);
         }

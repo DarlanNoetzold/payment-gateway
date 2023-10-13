@@ -38,11 +38,11 @@ public class BoletoService {
     @Transactional
     @CacheInvalidateAll(cacheName = "boleto")
     public void updateBoletoModel(BoletoModel boletoModel){
-        if (boletoModel == null || boletoModel.getId() == null) {
+        if (boletoModel == null || boletoModel.getBoletoId() == null) {
             throw new WebApplicationException("Invalid data for boletoModel update", Response.Status.BAD_REQUEST);
         }
 
-        BoletoModel existingBoletoModel = findBoletoModelById(boletoModel.getId());
+        BoletoModel existingBoletoModel = findBoletoModelById(boletoModel.getBoletoId());
         if (existingBoletoModel == null) {
             throw new WebApplicationException("boletoModel not found", Response.Status.NOT_FOUND);
         }

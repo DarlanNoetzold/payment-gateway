@@ -38,11 +38,11 @@ public class PixService {
     @Transactional
     @CacheInvalidateAll(cacheName = "pix")
     public void updatePixModel(PixModel pixModel){
-        if (pixModel == null || pixModel.getId() == null) {
+        if (pixModel == null || pixModel.getPixId() == null) {
             throw new WebApplicationException("Invalid data for pixModel update", Response.Status.BAD_REQUEST);
         }
 
-        PixModel existingPixModel = findPixModelById(pixModel.getId());
+        PixModel existingPixModel = findPixModelById(pixModel.getPixId());
         if (existingPixModel == null) {
             throw new WebApplicationException("customerModel not found", Response.Status.NOT_FOUND);
         }

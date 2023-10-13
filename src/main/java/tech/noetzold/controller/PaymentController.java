@@ -9,16 +9,14 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.jboss.logging.Logger;
-import tech.noetzold.model.CustomerModel;
 import tech.noetzold.model.PaymentModel;
 import tech.noetzold.model.enums.PaymentMethod;
-import tech.noetzold.service.CustomerService;
 import tech.noetzold.service.PaymentService;
 
 import java.util.Date;
 import java.util.UUID;
 
-@Path("/api/v1/payment")
+@Path("/api/payment/v1/payment")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PaymentController {

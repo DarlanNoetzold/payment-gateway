@@ -19,7 +19,7 @@ public class CardModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID cardId;
     private String cardNumber;
     private String cardHolderName;
     private String expirationDate;

@@ -14,7 +14,7 @@ import tech.noetzold.service.CustomerService;
 
 import java.util.UUID;
 
-@Path("/api/v1/customer")
+@Path("/api/payment/v1/customer")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CustomerController {

@@ -10,11 +10,11 @@ import java.util.UUID;
 @ApplicationScoped
 public class CustomerRepository implements PanacheRepository<CustomerModel> {
     public Optional<CustomerModel> findByIdOptional(UUID id) {
-        return find("id", id).firstResultOptional();
+        return find("customerId", id).firstResultOptional();
     }
 
     public void deleteById(UUID id) {
-        delete("id", id);
+        delete("customerId", id);
     }
 
     public Optional<CustomerModel> findByUserIdOptional(String userId) {

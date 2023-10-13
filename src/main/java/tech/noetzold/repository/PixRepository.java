@@ -11,10 +11,10 @@ import java.util.UUID;
 public class PixRepository implements PanacheRepository<PixModel> {
 
     public Optional<PixModel> findByIdOptional(UUID id) {
-        return find("id", id).firstResultOptional();
+        return find("pixId", id).firstResultOptional();
     }
 
     public void deleteById(UUID id) {
-        delete("id", id);
+        delete("pixId", id);
     }
 }

@@ -10,10 +10,10 @@ import java.util.UUID;
 @ApplicationScoped
 public class BoletoRepository implements PanacheRepository<BoletoModel> {
     public Optional<BoletoModel> findByIdOptional(UUID id) {
-        return find("id", id).firstResultOptional();
+        return find("boletoId", id).firstResultOptional();
     }
 
     public void deleteById(UUID id) {
-        delete("id", id);
+        delete("boletoId", id);
     }
 }

@@ -7,7 +7,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
-import tech.noetzold.model.paymentMethods.BoletoModel;
 import tech.noetzold.model.paymentMethods.CardModel;
 import tech.noetzold.repository.CardRepository;
 
@@ -38,11 +37,11 @@ public class CardService {
     @Transactional
     @CacheInvalidateAll(cacheName = "card")
     public void updateCardModel(CardModel cardModel){
-        if (cardModel == null || cardModel.getId() == null) {
+        if (cardModel == null || cardModel.getCardId() == null) {
             throw new WebApplicationException("Invalid data for cardModel update", Response.Status.BAD_REQUEST);
         }
 
-        CardModel existingCardModel = findCardModelById(cardModel.getId());
+        CardModel existingCardModel = findCardModelById(cardModel.getCardId());
         if (existingCardModel == null) {
             throw new WebApplicationException("cardModel not found", Response.Status.NOT_FOUND);
         }

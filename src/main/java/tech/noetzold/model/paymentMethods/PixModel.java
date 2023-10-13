@@ -18,7 +18,7 @@ public class PixModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID pixId;
     private String chavePix;
     private String descricao;
     private String identificadorTransacao;

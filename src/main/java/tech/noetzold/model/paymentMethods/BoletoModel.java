@@ -19,7 +19,7 @@ public class BoletoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID boletoId;
     private String codigoDeBarras;
     private String linhaDigitavel;
     private String beneficiarioNome;

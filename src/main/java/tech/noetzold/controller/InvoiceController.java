@@ -67,13 +67,13 @@ public class InvoiceController {
             }
             invoiceModel.setInvoiceId(null);
             quoteRequestEmitter.send(invoiceModel);
-            logger.info("Create " + invoiceModel. getInvoiceNumber());
+            logger.info("Create " + invoiceModel.getInvoiceNumber());
             return Response.status(Response.Status.CREATED).entity(invoiceModel).build();
         } catch (Exception e) {
-            logger.error("Error to create invoiceModel: " + invoiceModel. getInvoiceNumber());
+            logger.error("Error to create invoiceModel: " + invoiceModel.getInvoiceNumber());
             e.printStackTrace();
         }
-        logger.error("Error to create invoiceModel: " + invoiceModel. getInvoiceNumber());
+        logger.error("Error to create invoiceModel: " + invoiceModel.getInvoiceNumber());
         return Response.status(Response.Status.BAD_REQUEST).entity(invoiceModel).build();
     }
 

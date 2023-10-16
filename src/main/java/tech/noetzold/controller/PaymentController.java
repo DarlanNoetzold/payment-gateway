@@ -37,7 +37,7 @@ public class PaymentController {
 
         PaymentModel paymentModel = paymentService.findPaymentModelById(uuid);
 
-        if (paymentModel == null) {
+        if (paymentModel.getPaymentId() == null) {
             logger.error("There is no payment with id: " + id);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -51,7 +51,7 @@ public class PaymentController {
     public Response findPaymentModelUserById(@PathParam("userId") String userId){
         PaymentModel paymentModel = paymentService.findPaymentModelByUserId(userId);
 
-        if (paymentModel == null) {
+        if (paymentModel.getPaymentId() == null) {
             logger.error("There is no payment with user id: " + userId);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -130,7 +130,7 @@ public class PaymentController {
         }
 
         PaymentModel existingPaymentModel = paymentService.findPaymentModelById(UUID.fromString(id));
-        if (existingPaymentModel == null) {
+        if (existingPaymentModel.getPaymentId() == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 

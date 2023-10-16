@@ -24,7 +24,7 @@ public class InvoiceService {
     @CacheResult(cacheName = "invoice")
     public InvoiceModel findInvoiceById(UUID id) {
         Optional<InvoiceModel> optionalInvoice = invoiceRepository.findByIdOptional(id);
-        return optionalInvoice.orElse(null);
+        return optionalInvoice.orElse(new InvoiceModel());
     }
 
     @Transactional

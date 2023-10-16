@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.wildfly.common.annotation.NotNull;
 import tech.noetzold.model.enums.PaymentMethod;
 import tech.noetzold.model.enums.PaymentState;
@@ -28,6 +30,7 @@ public class PaymentModel {
 
     @NotNull
     @ManyToOne
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "customer_id")
     private CustomerModel customer;
 
@@ -67,6 +70,7 @@ public class PaymentModel {
     private PaypalModel paypalModel;
 
     @OneToMany(mappedBy = "payment")
+    @Fetch(FetchMode.JOIN)
     private List<InvoiceModel> invoices;
 
 

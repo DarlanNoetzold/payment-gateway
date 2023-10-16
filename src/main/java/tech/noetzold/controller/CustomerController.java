@@ -34,7 +34,7 @@ public class CustomerController {
 
         CustomerModel customerModel = customerService.findCustomerModelByUserId(id);
 
-        if(customerModel == null){
+        if(customerModel.getCustomerId() == null){
             logger.error("There is no customer with userId: " + id);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -50,7 +50,7 @@ public class CustomerController {
 
         CustomerModel customerModel = customerService.findCustomerModelById(uuid);
 
-        if(customerModel == null){
+        if(customerModel.getCustomerId() == null){
             logger.error("There is no customer with id: " + id);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -82,13 +82,13 @@ public class CustomerController {
     @Path("/{id}")
     @RolesAllowed("admin")
     public Response updateCustomerModel(@PathParam("id") String id, CustomerModel updatedCustomerModel) {
-        if (id.isBlank() || updatedCustomerModel == null) {
+        if (id.isBlank() || updatedCustomerModel.getCustomerId() == null) {
             logger.warn("Error to update customerModel: " + id);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         CustomerModel existingCustomerModel = customerService.findCustomerModelById(UUID.fromString(id));
-        if (existingCustomerModel == null) {
+        if (existingCustomerModel.getCustomerId() == null) {
             logger.warn("Error to update customerModel: " + id);
             return Response.status(Response.Status.NOT_FOUND).build();
         }

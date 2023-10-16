@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.wildfly.common.annotation.NotNull;
 import tech.noetzold.model.paymentMethods.CardModel;
 
@@ -29,10 +31,12 @@ public class CustomerModel {
     private Date bornDate;
 
     @OneToMany
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "transaction_id")
     private List<PaymentModel> transactions;
 
     @OneToMany
+    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "card_id")
     private List<CardModel> cards;
 

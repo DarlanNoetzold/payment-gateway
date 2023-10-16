@@ -24,7 +24,7 @@ public class PixService {
     @CacheResult(cacheName = "pix")
     public PixModel findPixModelById(UUID id){
         Optional<PixModel> optionalPixModel = pixRepository.findByIdOptional(id);
-        return optionalPixModel.orElse(null);
+        return optionalPixModel.orElse(new PixModel());
     }
 
     @Transactional

@@ -24,7 +24,7 @@ public class PaypalService {
     @CacheResult(cacheName = "paypal")
     public PaypalModel findPaypalModelById(UUID id){
         Optional<PaypalModel> optionalPaypalModel = paypalRepository.findByIdOptional(id);
-        return optionalPaypalModel.orElse(null);
+        return optionalPaypalModel.orElse(new PaypalModel());
     }
 
     @Transactional

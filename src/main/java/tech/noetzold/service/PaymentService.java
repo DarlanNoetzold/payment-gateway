@@ -24,7 +24,7 @@ public class PaymentService {
     @CacheResult(cacheName = "payment")
     public PaymentModel findPaymentModelById(UUID id){
         Optional<PaymentModel> optionalPaymentModel = paymentRepository.findByIdOptional(id);
-        return optionalPaymentModel.orElse(null);
+        return optionalPaymentModel.orElse(new PaymentModel());
     }
 
     @Transactional
@@ -70,6 +70,6 @@ public class PaymentService {
     @CacheResult(cacheName = "payment")
     public PaymentModel findPaymentModelByUserId(String userId) {
         Optional<PaymentModel> optionalPaymentModel = paymentRepository.findByUserIdOptional(userId);
-        return optionalPaymentModel.orElse(null);
+        return optionalPaymentModel.orElse(new PaymentModel());
     }
 }

@@ -23,13 +23,13 @@ public class CustomerService {
     @Transactional
     public CustomerModel findCustomerModelById(UUID id){
         Optional<CustomerModel> optionalCustomerModel = customerRepository.findByIdOptional(id);
-        return optionalCustomerModel.orElse(null);
+        return optionalCustomerModel.orElse(new CustomerModel());
     }
 
     @Transactional
     public CustomerModel findCustomerModelByUserId(String id) {
         Optional<CustomerModel> optionalCustomerModel = customerRepository.findByUserIdOptional(id);
-        return optionalCustomerModel.orElse(null);
+        return optionalCustomerModel.orElse(new CustomerModel());
     }
 
     @Transactional

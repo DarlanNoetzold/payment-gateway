@@ -23,7 +23,7 @@ public class CardService {
     @CacheResult(cacheName = "card")
     public CardModel findCardModelById(UUID id){
         Optional<CardModel> optionalCardModel = cardRepository.findByIdOptional(id);
-        return optionalCardModel.orElse(null);
+        return optionalCardModel.orElse(new CardModel());
     }
 
     @Transactional

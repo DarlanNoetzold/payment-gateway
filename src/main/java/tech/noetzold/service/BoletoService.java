@@ -24,7 +24,7 @@ public class BoletoService {
     @CacheResult(cacheName = "boleto")
     public BoletoModel findBoletoModelById(UUID id){
         Optional<BoletoModel> optionalBoletoModel = boletoRepository.findByIdOptional(id);
-        return optionalBoletoModel.orElse(null);
+        return optionalBoletoModel.orElse(new BoletoModel());
     }
 
     @Transactional

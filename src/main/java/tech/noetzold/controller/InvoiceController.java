@@ -35,7 +35,7 @@ public class InvoiceController {
 
         InvoiceModel invoiceModel = invoiceService.findInvoiceById(uuid);
 
-        if (invoiceModel == null) {
+        if (invoiceModel.getInvoiceId() == null) {
             logger.error("There is no invoice with id: " + id);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -87,7 +87,7 @@ public class InvoiceController {
         }
 
         InvoiceModel existingInvoiceModel = invoiceService.findInvoiceById(UUID.fromString(id));
-        if (existingInvoiceModel == null) {
+        if (existingInvoiceModel.getInvoiceId() == null) {
             logger.warn("Error to update invoiceModel: " + id);
             return Response.status(Response.Status.NOT_FOUND).build();
         }

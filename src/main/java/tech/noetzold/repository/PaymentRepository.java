@@ -4,6 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import tech.noetzold.model.PaymentModel;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,8 +14,12 @@ public class PaymentRepository implements PanacheRepository<PaymentModel> {
         return find("paymentId", id).firstResultOptional();
     }
 
-    public Optional<PaymentModel> findByUserIdOptional(String userId) {
-        return find("customer_id", userId).firstResultOptional();
+    public List<PaymentModel> findByUserId(String userId) {
+        return list("customer_id", userId);
+    }
+
+    public List<PaymentModel> findByOrderId(String orderId) {
+        return list("orderId", orderId);
     }
 
     public void deleteById(UUID id) {

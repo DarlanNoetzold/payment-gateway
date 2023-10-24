@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.Response;
 import tech.noetzold.model.PaymentModel;
 import tech.noetzold.repository.PaymentRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -67,9 +68,11 @@ public class PaymentService {
     }
 
     @Transactional
-    @CacheResult(cacheName = "payment")
-    public PaymentModel findPaymentModelByUserId(String userId) {
-        Optional<PaymentModel> optionalPaymentModel = paymentRepository.findByUserIdOptional(userId);
-        return optionalPaymentModel.orElse(new PaymentModel());
+    public List<PaymentModel> findPaymentModelByUserId(String userId) {
+        return paymentRepository.findByUserId(userId);
+    }
+
+    public List<PaymentModel> findPaymentModelByOrderId(String orderId) {
+        return paymentRepository.findByOrderId(orderId);
     }
 }

@@ -14,6 +14,7 @@ import tech.noetzold.model.enums.PaymentMethod;
 import tech.noetzold.service.PaymentService;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Path("/api/payment/v1/payment")
@@ -46,17 +47,31 @@ public class PaymentController {
     }
 
     @GET
-    @Path("/user/{user}")
+    @Path("/order/{orderId}")
     @RolesAllowed("admin")
-    public Response findPaymentModelUserById(@PathParam("userId") String userId){
-        PaymentModel paymentModel = paymentService.findPaymentModelByUserId(userId);
+    public Response findPaymentModelByOrderId(@PathParam("orderId") String orderId){
+        List<PaymentModel> paymentModels = paymentService.findPaymentModelByOrderId(orderId);
 
-        if (paymentModel.getPaymentId() == null) {
+        if (paymentModels.isEmpty()) {
+            logger.error("There is no payment with order id: " + orderId);
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(paymentModels).build();
+    }
+
+    @GET
+    @Path("/user/{userId}")
+    @RolesAllowed("admin")
+    public Response findPaymentModelUserById (@PathParam("userId") String userId){
+        List<PaymentModel> paymentModels = paymentService.findPaymentModelByUserId(userId);
+
+        if (paymentModels.isEmpty()) {
             logger.error("There is no payment with user id: " + userId);
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.ok(paymentModel).build();
+        return Response.ok(paymentModels).build();
     }
 
     @POST

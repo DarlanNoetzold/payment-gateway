@@ -6,14 +6,10 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import tech.noetzold.controller.CustomerController;
-import io.quarkus.test.common.http.TestHTTPEndpoint;
-import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
-import io.restassured.response.Response;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.core.MediaType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
@@ -99,7 +95,7 @@ public class CustomerControllerTest {
     public void testUpdateCustomerModel() {
         JsonObject json = Json.createObjectBuilder()
                 .add("userId", "yourUserIdHere")
-                .add("registerDate", "2023-10-26T00:00:00")  // Adjust with the date you want
+                .add("registerDate", "2023-10-26T00:00:00")
                 .build();
 
         given()

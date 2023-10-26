@@ -5,9 +5,15 @@ import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
+import io.quarkus.test.security.TestSecurity;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.ws.rs.core.MediaType;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import tech.noetzold.controller.InvoiceController;
-import tech.noetzold.controller.PaymentController;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +24,8 @@ import static io.restassured.RestAssured.given;
 public class InvoiceControllerTest {
 
     private String accessToken;
+    private static Response invoiceListResponse;
+
 
     @BeforeEach
     public void obtainAccessToken() {
@@ -42,4 +50,99 @@ public class InvoiceControllerTest {
 
         this.accessToken = response.jsonPath().getString("access_token");
     }
+
+    @Test
+    @Order(4)
+    @TestSecurity(user = "admin", roles = {"admin"})
+    public void testFindInvoiceModelById() {
+        given()
+                .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .get("http://localhost:9000/api/payment/v1/invoice/{id}", (Object) invoiceListResponse.jsonPath().get("invoiceId"))
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    @Order(3)
+    @TestSecurity(user = "admin", roles = {"admin"})
+    public void testFindInvoiceModelByPayment() {
+        invoiceListResponse = given()
+                .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .get("http://localhost:9000/api/payment/v1/invoice/payment/{paymentId}", "paymentId")
+                .then()
+                .statusCode(200)
+                .extract()
+                .response();;
+    }
+
+    @Test
+    @Order(2)
+    @TestSecurity(user = "admin", roles = {"admin"})
+    public void testSaveInvoiceModel() {
+        JsonObject json = Json.createObjectBuilder()
+                .add("customer", Json.createObjectBuilder().add("customerId", "customerId"))
+                .add("payment", Json.createObjectBuilder().add("paymentId", "paymentId"))
+                .add("invoiceNumber", "INV-12345")
+                .add("invoiceDate", "2023-10-15T00:00:00Z")
+                .add("totalAmount", 90.0)
+                .add("discountAmount", 10.0)
+                .add("sellerName", "Empresa Exemplo")
+                .add("sellerAddress", "Rua Exemplo, 123")
+                .add("buyerName", "Comprador Exemplo")
+                .add("buyerAddress", "Avenida Exemplo, 456")
+                .add("itemsId", Json.createArrayBuilder(Arrays.asList("item1", "item2", "item3"))
+                        .build()).build();
+
+        given()
+                .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(json.toString())
+                .when()
+                .post("http://localhost:9000/api/payment/v1/invoice")
+                .then()
+                .statusCode(201);
+    }
+
+    @Test
+    @Order(1)
+    @TestSecurity(user = "admin", roles = {"admin"})
+    public void testUpdateInvoiceModel() {
+        JsonObject json = Json.createObjectBuilder()
+                .add("customer", Json.createObjectBuilder().add("customerId", "customerId"))
+                .add("payment", Json.createObjectBuilder().add("paymentId", "paymentId"))
+                .add("invoiceNumber", "INV-12345")
+                .add("invoiceDate", "2023-10-15T00:00:00Z")
+                .add("totalAmount", 90.0)
+                .add("discountAmount", 10.0)
+                .add("sellerName", "Empresa Exemplo")
+                .add("sellerAddress", "Rua Exemplo, 123")
+                .add("buyerName", "Comprador Exemplo")
+                .add("buyerAddress", "Avenida Exemplo, 456")
+                .add("itemsId", Json.createArrayBuilder(Arrays.asList("item1", "item2", "item3"))
+                        .build()).build();
+
+        given()
+                .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(json.toString())
+                .when()
+                .put("http://localhost:9000/api/payment/v1/invoice/{id}", "yourInvoiceIdHere")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    @Order(5)
+    @TestSecurity(user = "admin", roles = {"admin"})
+    public void testDeleteInvoiceModel() {
+        given()
+                .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
+                .when()
+                .delete("http://localhost:9000/api/payment/v1/invoice/{id}", "yourInvoiceIdHere")
+                .then()
+                .statusCode(200);
+    }
+
 }

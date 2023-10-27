@@ -49,10 +49,12 @@ public class PaymentConsumer {
 
         PaymentModel incomingPaymentModel = incomingPaymentModeInJson.mapTo(PaymentModel.class);
 
-        CustomerModel customerModel = customerService.findCustomerModelByUserId(incomingPaymentModel.getCustomer().getUserId());
+        CustomerModel customerModel = customerService.findCustomerModelById(incomingPaymentModel.getCustomer().getCustomerId());
 
-        if (customerModel == null){
-            customerModel = customerService.saveCustomerModel(incomingPaymentModel.getCustomer());
+        if(customerModel.getCustomerId() == null){
+            logger.error("Customer do not exist");
+        }else{
+            customerService.updateCustomerModel(incomingPaymentModel.getCustomer());
         }
 
         if (incomingPaymentModel.getPaymentMethod().equals(PaymentMethod.PAYPAL)){

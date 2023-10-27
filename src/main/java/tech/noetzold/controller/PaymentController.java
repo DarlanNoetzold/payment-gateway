@@ -1,6 +1,7 @@
 package tech.noetzold.controller;
 
 
+import io.vertx.core.json.JsonObject;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -11,7 +12,11 @@ import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.jboss.logging.Logger;
 import tech.noetzold.model.PaymentModel;
 import tech.noetzold.model.enums.PaymentMethod;
-import tech.noetzold.service.PaymentService;
+import tech.noetzold.model.paymentMethods.BoletoModel;
+import tech.noetzold.model.paymentMethods.CardModel;
+import tech.noetzold.model.paymentMethods.PaypalModel;
+import tech.noetzold.model.paymentMethods.PixModel;
+import tech.noetzold.service.*;
 
 import java.util.Date;
 import java.util.List;
@@ -25,8 +30,20 @@ public class PaymentController {
     @Inject
     PaymentService paymentService;
 
+    @Inject
+    PaypalService paypalService;
+
+    @Inject
+    CardService cardService;
+
+    @Inject
+    PixService pixService;
+
+    @Inject
+    BoletoService boletoService;
+
     @Channel("payments-out")
-    Emitter<PaymentModel> quoteRequestEmitter;
+    Emitter<JsonObject> quoteRequestEmitter;
 
     private static final Logger logger = Logger.getLogger(PaymentController.class);
 
@@ -130,10 +147,10 @@ public class PaymentController {
 
         paymentModel.setRegisterDate(new Date());
 
-        quoteRequestEmitter.send(paymentModel);
+        quoteRequestEmitter.send(JsonObject.mapFrom(paymentModel));
         logger.info("Payment message sended");
 
-        return Response.ok(paymentModel).build();
+        return Response.status(Response.Status.CREATED).entity(paymentModel).build();
     }
 
     @PUT
@@ -149,9 +166,78 @@ public class PaymentController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
+        if(paymentModel.getPaymentMethod() == null){
+            logger.error("PaymentMethod is null");
+            return Response.status(Response.Status.BAD_REQUEST).entity("PaymentMethod needs to be filled.").build();
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.PAYPAL)) {
+            if(paymentModel.getPaypalModel() == null) {
+                logger.error("Paypal PaymentMethod is null");
+                return Response.status(Response.Status.BAD_REQUEST).entity("PAYPAL needs to be filled for this PaymentMethod.").build();
+            }
+            paymentModel.setPixModel(null);
+            paymentModel.setCardModel(null);
+            paymentModel.setBoletoModel(null);
+            logger.info("Clean all payments, less Paypal");
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.BOLETO)) {
+            if(paymentModel.getBoletoModel() == null) {
+                logger.error("Boleto PaymentMethod is null");
+                return Response.status(Response.Status.BAD_REQUEST).entity("BOLETO needs to be filled for this PaymentMethod.").build();
+            }
+            paymentModel.setPixModel(null);
+            paymentModel.setCardModel(null);
+            paymentModel.setPaypalModel(null);
+            logger.info("Clean all payments, less Boleto");
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.PIX)) {
+            if(paymentModel.getPixModel() == null) {
+                logger.error("Pix PaymentMethod is null");
+                return Response.status(Response.Status.BAD_REQUEST).entity("PIX needs to be filled for this PaymentMethod.").build();
+            }
+            paymentModel.setPaypalModel(null);
+            paymentModel.setCardModel(null);
+            paymentModel.setBoletoModel(null);
+            logger.info("Clean all payments, less Pix");
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.CREDIT_CARD)) {
+            if(paymentModel.getCardModel() == null) {
+                logger.error("Card PaymentMethod is null");
+                return Response.status(Response.Status.BAD_REQUEST).entity("CARD needs to be filled for this PaymentMethod.").build();
+            }
+            paymentModel.setPixModel(null);
+            paymentModel.setPaypalModel(null);
+            paymentModel.setBoletoModel(null);
+            logger.info("Clean all payments, less Card");
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.DEBIT_CARD)) {
+            if(paymentModel.getCardModel() == null) {
+                logger.error("Card PaymentMethod is null");
+                return Response.status(Response.Status.BAD_REQUEST).entity("CARD needs to be filled for this PaymentMethod.").build();
+            }
+            paymentModel.setPixModel(null);
+            paymentModel.setPaypalModel(null);
+            paymentModel.setBoletoModel(null);
+            logger.info("Clean all payments, less Card");
+        }
+
+        if (paymentModel.getPaymentMethod().equals(PaymentMethod.PAYPAL)){
+            PaypalModel paypalModel = paypalService.updatePaypalModel(paymentModel.getPaypalModel());
+            paymentModel.setPaypalModel(paypalModel);
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.DEBIT_CARD) || paymentModel.getPaymentMethod().equals(PaymentMethod.CREDIT_CARD)) {
+            CardModel cardModel = cardService.updateCardModel(paymentModel.getCardModel());
+            paymentModel.setCardModel(cardModel);
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.PIX)) {
+            PixModel pixModel = pixService.updatePixModel(paymentModel.getPixModel());
+            paymentModel.setPixModel(pixModel);
+        } else if (paymentModel.getPaymentMethod().equals(PaymentMethod.BOLETO)) {
+            BoletoModel boletoModel = boletoService.updateBoletoModel(paymentModel.getBoletoModel());
+            paymentModel.setBoletoModel(boletoModel);
+        } else {
+            logger.error("Lost message info.");
+            return null;
+        }
+
+        paymentModel.setPaymentId(existingPaymentModel.getPaymentId());
+
         paymentService.updatePaymentModel(paymentModel);
 
-        return Response.ok(paymentModel).build();
+        return Response.status(Response.Status.CREATED).entity(paymentModel).build();
     }
 
     @DELETE

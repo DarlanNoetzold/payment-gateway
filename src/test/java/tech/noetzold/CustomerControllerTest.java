@@ -29,7 +29,7 @@ public class CustomerControllerTest {
         final String username = "admin";
         final String password = "admin";
 
-        final String tokenEndpoint = "http://localhost:8180/realms/quarkus/protocol/openid-connect/token";
+        final String tokenEndpoint = "http://localhost:8180/realms/quarkus1/protocol/openid-connect/token";
 
         final Map<String, String> requestData = new HashMap<>();
         requestData.put("username", username);
@@ -49,24 +49,25 @@ public class CustomerControllerTest {
     }
 
     @Test
-    @Order(1)
+    @Order(4)
     @TestSecurity(user = "admin", roles = {"admin"})
     public void testGetCustomerModelByUserId() {
         given()
                 .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
                 .when()
-                .get("http://localhost:7000/api/payment/v1/customer/{id}", "yourUserIdHere")
+                .get("http://localhost:7000/api/payment/v1/customer/{id}", "userId")
                 .then()
                 .statusCode(200);
     }
 
     @Test
+    @Order(3)
     @TestSecurity(user = "admin", roles = {"admin"})
     public void testGetCustomerModelById() {
         given()
                 .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
                 .when()
-                .get("http://localhost:7000/api/payment/v1/customer/paymentId/{id}", "yourCustomerIdHere")
+                .get("http://localhost:7000/api/payment/v1/customer/paymentId/{id}", "12345678-1234-1234-1234-123456789013")
                 .then()
                 .statusCode(200);
     }
@@ -76,7 +77,7 @@ public class CustomerControllerTest {
     @TestSecurity(user = "admin", roles = {"admin"})
     public void testSaveCustomerModel() {
         JsonObject json = Json.createObjectBuilder()
-                .add("userId", "yourUserIdHere")
+                .add("userId", "userId")
                 .add("registerDate", "2023-10-26T00:00:00")  // Adjust with the date you want
                 .build();
 
@@ -91,10 +92,11 @@ public class CustomerControllerTest {
     }
 
     @Test
+    @Order(2)
     @TestSecurity(user = "admin", roles = {"admin"})
     public void testUpdateCustomerModel() {
         JsonObject json = Json.createObjectBuilder()
-                .add("userId", "yourUserIdHere")
+                .add("userId", "userId")
                 .add("registerDate", "2023-10-26T00:00:00")
                 .build();
 
@@ -103,18 +105,19 @@ public class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(json.toString())
                 .when()
-                .put("http://localhost:7000/api/payment/v1/customer/{id}", "yourCustomerIdHere")
+                .put("http://localhost:7000/api/payment/v1/customer/{id}", "12345678-1234-1234-1234-123456789013")
                 .then()
                 .statusCode(200);
     }
 
     @Test
+    @Order(5)
     @TestSecurity(user = "admin", roles = {"admin"})
     public void testDeleteCustomerModel() {
         given()
                 .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
                 .when()
-                .delete("http://localhost:7000/api/payment/v1/customer/{id}", "yourCustomerIdHere")
+                .delete("http://localhost:7000/api/payment/v1/customer/{id}", "12345678-1234-1234-1234-123456789022")
                 .then()
                 .statusCode(200);
     }

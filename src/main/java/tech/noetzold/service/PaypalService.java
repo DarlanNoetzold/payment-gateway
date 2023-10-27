@@ -37,7 +37,7 @@ public class PaypalService {
 
     @Transactional
     @CacheInvalidateAll(cacheName = "paypal")
-    public void updatePaypalModel(PaypalModel paypalModel){
+    public PaypalModel updatePaypalModel(PaypalModel paypalModel){
         if (paypalModel == null || paypalModel.getPaypalId() == null) {
             throw new WebApplicationException("Invalid data for paypalModel update", Response.Status.BAD_REQUEST);
         }
@@ -52,6 +52,8 @@ public class PaypalService {
         existingPaypalModel.setIdentificadorTransacao(paypalModel.getIdentificadorTransacao());
 
         paypalRepository.persist(existingPaypalModel);
+        paypalRepository.flush();
+        return paypalModel;
     }
 
     @Transactional

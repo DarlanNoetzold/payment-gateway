@@ -1,5 +1,6 @@
 package tech.noetzold.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +27,8 @@ public class InvoiceModel {
     private CustomerModel customer;
 
     @NotNull
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "paymentId")
     private PaymentModel payment;
 

@@ -19,7 +19,7 @@ public class CustomerService {
     @Inject
     CustomerRepository customerRepository;
 
-    @CacheResult(cacheName = "customer")
+
     @Transactional
     public CustomerModel findCustomerModelById(UUID id){
         Optional<CustomerModel> optionalCustomerModel = customerRepository.findByIdOptional(id);
@@ -48,7 +48,7 @@ public class CustomerService {
         }
 
         CustomerModel existingCustomerModel = findCustomerModelById(customerModel.getCustomerId());
-        if (existingCustomerModel == null) {
+        if (existingCustomerModel.getCustomerId() == null) {
             throw new WebApplicationException("customerModel not found", Response.Status.NOT_FOUND);
         }
 

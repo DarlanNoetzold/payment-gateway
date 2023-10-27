@@ -43,7 +43,7 @@ public class CustomerService {
     @Transactional
     @CacheInvalidateAll(cacheName = "customer")
     public void updateCustomerModel(CustomerModel customerModel){
-        if (customerModel == null || customerModel.getCustomerId() == null) {
+        if (customerModel == null) {
             throw new WebApplicationException("Invalid data for customerModel update", Response.Status.BAD_REQUEST);
         }
 
@@ -54,7 +54,6 @@ public class CustomerService {
 
         existingCustomerModel.setBornDate(customerModel.getBornDate());
         existingCustomerModel.setCards(customerModel.getCards());
-        existingCustomerModel.setTransactions(customerModel.getTransactions());
         existingCustomerModel.setUserId(customerModel.getUserId());
         existingCustomerModel.setRegisterDate(customerModel.getRegisterDate());
 

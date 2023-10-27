@@ -1,5 +1,6 @@
 package tech.noetzold.controller;
 
+import io.vertx.core.json.JsonObject;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -23,7 +24,7 @@ public class InvoiceController {
     InvoiceService invoiceService;
 
     @Channel("invoicers-out")
-    Emitter<InvoiceModel> quoteRequestEmitter;
+    Emitter<JsonObject> quoteRequestEmitter;
 
     private static final Logger logger = Logger.getLogger(InvoiceController.class);
 
@@ -43,20 +44,6 @@ public class InvoiceController {
         return Response.ok(invoiceModel).build();
     }
 
-    @GET
-    @Path("/payment/{paymentId}")
-    @RolesAllowed("admin")
-    public Response findInvoiceModelByPayment(@PathParam("paymentId") String paymentId){
-        List<InvoiceModel> invoicesModels = invoiceService.findInvoicesByPaymentId(UUID.fromString(paymentId));
-
-        if (invoicesModels.isEmpty()) {
-            logger.error("There is no invoice for the payment: " + paymentId);
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-
-        return Response.ok(invoicesModels).build();
-    }
-
     @POST
     @RolesAllowed("admin")
     public Response saveInvoiceModel(InvoiceModel invoiceModel){
@@ -66,7 +53,7 @@ public class InvoiceController {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
             invoiceModel.setInvoiceId(null);
-            quoteRequestEmitter.send(invoiceModel);
+            quoteRequestEmitter.send(JsonObject.mapFrom(invoiceModel));
             logger.info("Create " + invoiceModel.getInvoiceNumber());
             return Response.status(Response.Status.CREATED).entity(invoiceModel).build();
         } catch (Exception e) {
@@ -92,12 +79,15 @@ public class InvoiceController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
+        invoiceModel.setInvoiceId(existingInvoiceModel.getInvoiceId());
+
         invoiceService.updateInvoice(invoiceModel);
 
-        return Response.ok(invoiceModel).build();
+        return Response.status(Response.Status.CREATED).entity(invoiceModel).build();
     }
 
     @DELETE
+    @Path("/{id}")
     @RolesAllowed("admin")
     public Response deleteCustomerModel(@PathParam("id") String id){
         if (id.isBlank()) {

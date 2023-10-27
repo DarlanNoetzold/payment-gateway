@@ -15,7 +15,7 @@ public class PaymentRepository implements PanacheRepository<PaymentModel> {
     }
 
     public List<PaymentModel> findByUserId(String userId) {
-        return list("customer_id", userId);
+        return list("customer", userId);
     }
 
     public List<PaymentModel> findByOrderId(String orderId) {

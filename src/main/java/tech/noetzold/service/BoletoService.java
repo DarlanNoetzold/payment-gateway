@@ -37,7 +37,7 @@ public class BoletoService {
 
     @Transactional
     @CacheInvalidateAll(cacheName = "boleto")
-    public void updateBoletoModel(BoletoModel boletoModel){
+    public BoletoModel updateBoletoModel(BoletoModel boletoModel){
         if (boletoModel == null || boletoModel.getBoletoId() == null) {
             throw new WebApplicationException("Invalid data for boletoModel update", Response.Status.BAD_REQUEST);
         }
@@ -70,6 +70,8 @@ public class BoletoService {
         existingBoletoModel.setInformacoesContato(boletoModel.getInformacoesContato());
 
         boletoRepository.persist(existingBoletoModel);
+        boletoRepository.flush();
+        return existingBoletoModel;
     }
 
     @Transactional

@@ -36,7 +36,7 @@ public class CardService {
 
     @Transactional
     @CacheInvalidateAll(cacheName = "card")
-    public void updateCardModel(CardModel cardModel){
+    public CardModel updateCardModel(CardModel cardModel){
         if (cardModel == null || cardModel.getCardId() == null) {
             throw new WebApplicationException("Invalid data for cardModel update", Response.Status.BAD_REQUEST);
         }
@@ -53,6 +53,8 @@ public class CardService {
         existingCardModel.setExpirationDate(cardModel.getExpirationDate());
 
         cardRepository.persist(existingCardModel);
+        cardRepository.flush();
+        return cardModel;
     }
 
     @Transactional

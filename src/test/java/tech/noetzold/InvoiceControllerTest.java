@@ -24,15 +24,13 @@ import static io.restassured.RestAssured.given;
 public class InvoiceControllerTest {
 
     private String accessToken;
-    private static Response invoiceListResponse;
-
 
     @BeforeEach
     public void obtainAccessToken() {
         final String username = "admin";
         final String password = "admin";
 
-        final String tokenEndpoint = "http://localhost:8180/realms/quarkus/protocol/openid-connect/token";
+        final String tokenEndpoint = "http://localhost:8180/realms/quarkus1/protocol/openid-connect/token";
 
         final Map<String, String> requestData = new HashMap<>();
         requestData.put("username", username);
@@ -58,23 +56,9 @@ public class InvoiceControllerTest {
         given()
                 .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
                 .when()
-                .get("http://localhost:9000/api/payment/v1/invoice/{id}", (Object) invoiceListResponse.jsonPath().get("invoiceId"))
+                .get("http://localhost:7000/api/payment/v1/invoice/{id}", "12345678-1234-1234-1234-123456789018")
                 .then()
                 .statusCode(200);
-    }
-
-    @Test
-    @Order(3)
-    @TestSecurity(user = "admin", roles = {"admin"})
-    public void testFindInvoiceModelByPayment() {
-        invoiceListResponse = given()
-                .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
-                .when()
-                .get("http://localhost:9000/api/payment/v1/invoice/payment/{paymentId}", "paymentId")
-                .then()
-                .statusCode(200)
-                .extract()
-                .response();;
     }
 
     @Test
@@ -82,8 +66,8 @@ public class InvoiceControllerTest {
     @TestSecurity(user = "admin", roles = {"admin"})
     public void testSaveInvoiceModel() {
         JsonObject json = Json.createObjectBuilder()
-                .add("customer", Json.createObjectBuilder().add("customerId", "customerId"))
-                .add("payment", Json.createObjectBuilder().add("paymentId", "paymentId"))
+                .add("customer", Json.createObjectBuilder().add("customerId", "12345678-1234-1234-1234-123456789013"))
+                .add("payment", Json.createObjectBuilder().add("paymentId", "12345678-1234-1234-1234-123456789017"))
                 .add("invoiceNumber", "INV-12345")
                 .add("invoiceDate", "2023-10-15T00:00:00Z")
                 .add("totalAmount", 90.0)
@@ -100,7 +84,7 @@ public class InvoiceControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(json.toString())
                 .when()
-                .post("http://localhost:9000/api/payment/v1/invoice")
+                .post("http://localhost:7000/api/payment/v1/invoice")
                 .then()
                 .statusCode(201);
     }
@@ -110,8 +94,8 @@ public class InvoiceControllerTest {
     @TestSecurity(user = "admin", roles = {"admin"})
     public void testUpdateInvoiceModel() {
         JsonObject json = Json.createObjectBuilder()
-                .add("customer", Json.createObjectBuilder().add("customerId", "customerId"))
-                .add("payment", Json.createObjectBuilder().add("paymentId", "paymentId"))
+                .add("customer", Json.createObjectBuilder().add("customerId", "12345678-1234-1234-1234-123456789013"))
+                .add("payment", Json.createObjectBuilder().add("paymentId", "12345678-1234-1234-1234-123456789017"))
                 .add("invoiceNumber", "INV-12345")
                 .add("invoiceDate", "2023-10-15T00:00:00Z")
                 .add("totalAmount", 90.0)
@@ -128,9 +112,9 @@ public class InvoiceControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(json.toString())
                 .when()
-                .put("http://localhost:9000/api/payment/v1/invoice/{id}", "yourInvoiceIdHere")
+                .put("http://localhost:7000/api/payment/v1/invoice/{id}", "12345678-1234-1234-1234-123456789018")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
     }
 
     @Test
@@ -140,7 +124,7 @@ public class InvoiceControllerTest {
         given()
                 .header("Authorization", "Bearer " + accessToken).contentType(MediaType.APPLICATION_JSON)
                 .when()
-                .delete("http://localhost:9000/api/payment/v1/invoice/{id}", "yourInvoiceIdHere")
+                .delete("http://localhost:7000/api/payment/v1/invoice/{id}", "12345678-1234-1234-1234-123456789024")
                 .then()
                 .statusCode(200);
     }

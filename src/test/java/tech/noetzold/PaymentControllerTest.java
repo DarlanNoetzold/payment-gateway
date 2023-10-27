@@ -225,7 +225,7 @@ public class PaymentControllerTest {
                 .when()
                 .put("http://localhost:7000/api/payment/v1/payment/{id}", "12345678-1234-1234-1234-123456789017")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
     }
 
     @Test

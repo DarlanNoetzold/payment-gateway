@@ -42,6 +42,9 @@ public class PaymentController {
     @Inject
     BoletoService boletoService;
 
+    @Inject
+    CustomerService customerService;
+
     @Channel("payments-out")
     Emitter<JsonObject> quoteRequestEmitter;
 
@@ -232,6 +235,8 @@ public class PaymentController {
             logger.error("Lost message info.");
             return null;
         }
+
+        customerService.updateCustomerModel(customerService.findCustomerModelById(paymentModel.getCustomer().getCustomerId()));
 
         paymentModel.setPaymentId(existingPaymentModel.getPaymentId());
 

@@ -32,11 +32,6 @@ public class CustomerModel {
 
     @OneToMany
     @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "transaction_id")
-    private List<PaymentModel> transactions;
-
-    @OneToMany
-    @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "card_id")
     private List<CardModel> cards;
 

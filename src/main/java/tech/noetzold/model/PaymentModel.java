@@ -29,8 +29,7 @@ public class PaymentModel {
     private UUID paymentId;
 
     @NotNull
-    @ManyToOne(cascade=CascadeType.PERSIST)
-    @Fetch(FetchMode.JOIN)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name = "customer_id")
     private CustomerModel customer;
 

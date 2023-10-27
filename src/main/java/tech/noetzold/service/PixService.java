@@ -37,7 +37,7 @@ public class PixService {
 
     @Transactional
     @CacheInvalidateAll(cacheName = "pix")
-    public void updatePixModel(PixModel pixModel){
+    public PixModel updatePixModel(PixModel pixModel){
         if (pixModel == null || pixModel.getPixId() == null) {
             throw new WebApplicationException("Invalid data for pixModel update", Response.Status.BAD_REQUEST);
         }
@@ -52,6 +52,8 @@ public class PixService {
         existingPixModel.setIdentificadorTransacao(pixModel.getIdentificadorTransacao());
 
         pixRepository.persist(existingPixModel);
+        pixRepository.flush();
+        return pixModel;
     }
 
     @Transactional

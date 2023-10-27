@@ -1,6 +1,7 @@
 package tech.noetzold.controller;
 
 
+import io.vertx.core.json.JsonObject;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -23,7 +24,7 @@ public class CustomerController {
     CustomerService customerService;
 
     @Channel("customers")
-    Emitter<CustomerModel> quoteRequestEmitter;
+    Emitter<JsonObject> quoteRequestEmitter;
 
     private static final Logger logger = Logger.getLogger(CustomerController.class);
 
@@ -67,7 +68,7 @@ public class CustomerController {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
             customerModel.setCustomerId(null);
-            quoteRequestEmitter.send(customerModel);
+            quoteRequestEmitter.send(JsonObject.mapFrom(customerModel));
             logger.info("Create " + customerModel.getCustomerId());
             return Response.status(Response.Status.CREATED).entity(customerModel).build();
         } catch (Exception e) {
@@ -82,7 +83,7 @@ public class CustomerController {
     @Path("/{id}")
     @RolesAllowed("admin")
     public Response updateCustomerModel(@PathParam("id") String id, CustomerModel updatedCustomerModel) {
-        if (id.isBlank() || updatedCustomerModel.getCustomerId() == null) {
+        if (id.isBlank()) {
             logger.warn("Error to update customerModel: " + id);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
@@ -93,12 +94,15 @@ public class CustomerController {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
+        updatedCustomerModel.setCustomerId(existingCustomerModel.getCustomerId());
+
         customerService.updateCustomerModel(updatedCustomerModel);
 
         return Response.ok(updatedCustomerModel).build();
     }
 
     @DELETE
+    @Path("/{id}")
     @RolesAllowed("admin")
     public Response deleteCustomerModel(@PathParam("id") String id){
         if (id.isBlank()) {

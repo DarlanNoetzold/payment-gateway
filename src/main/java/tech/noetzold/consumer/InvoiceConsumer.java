@@ -27,7 +27,7 @@ public class InvoiceConsumer {
         InvoiceModel incomingInvoiceModel = incomingInvoiceModelInJson.mapTo(InvoiceModel.class);
 
         invoiceService.saveInvoice(incomingInvoiceModel);
-        logger.info("Create Invoice " + incomingInvoiceModel.getInvoiceId() + " for payment " + incomingInvoiceModel.getPayment().getPaymentId() + ".");
+        logger.info("Create Invoice " + incomingInvoiceModel.getInvoiceId() + ".");
 
         return incomingInvoiceModel;
     }

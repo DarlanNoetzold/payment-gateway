@@ -29,7 +29,7 @@ public class PaymentModel {
     private UUID paymentId;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
     @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "customer_id")
     private CustomerModel customer;
@@ -53,19 +53,19 @@ public class PaymentModel {
 
     private double dicountAmount;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name = "boleto_model_id")
     private BoletoModel boletoModel;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name = "card_model_id")
     private CardModel cardModel;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name = "pix_model_id")
     private PixModel pixModel;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn(name = "paypal_model_id")
     private PaypalModel paypalModel;
 

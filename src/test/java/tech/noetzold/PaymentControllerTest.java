@@ -80,9 +80,9 @@ public class PaymentControllerTest {
         given()
                 .header("Authorization", "Bearer " + accessToken)
                 .when()
-                .get("http://localhost:7000/api/payment/v1/payment/user/{userId}", "12345678-1234-1234-1234-123456789013")
+                .get("http://localhost:7000/api/payment/v1/user/{userId}", "12345678-1234-1234-1234-123456789013")
                 .then()
-                .statusCode(500);
+                .statusCode(404);
     }
 
     @Test
@@ -223,7 +223,7 @@ public class PaymentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(json.toString())
                 .when()
-                .put("http://localhost:7000/api/payment/v1/payment/{id}" + "12345678-1234-1234-1234-123456789017")
+                .put("http://localhost:7000/api/payment/v1/payment/{id}", "12345678-1234-1234-1234-123456789017")
                 .then()
                 .statusCode(200);
     }

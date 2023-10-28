@@ -18,4 +18,6 @@
 ## Documentation
 * Postman: https://documenter.getpostman.com/view/16000387/2s9YRGx9Hr
 
+---
+
 ⭐️ From [DarlanNoetzold](https://github.com/DarlanNoetzold)

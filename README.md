@@ -5,14 +5,17 @@
 * Framework Quarkus;
 * Package manager Maven;
 * Message Broker RabbitMQ;
-* Cache with Redis;
+* Cache com Redis;
 * PostgreSQL Database;
-* Docker for CI/CD;
-* Keycloak for Authorization and Authetication.
+* Docker para CI/CD;
+* Keycloak para Authorization e Authetication;
+* Rest Assured e Junit5 para testes de integração.
 
 ## Projeto
-* This Payment Gateway will be used for an Ecommerce;
-* Accept some payments type and have two endpoint, one for payment with all information and one for Customers.
+* Este Gateway de Pagamento será utilizado para um Ecommerce;
+* Aceita alguns tipos de pagamentos e tem dois endpoints, um para pagamento com todas as informações e outro para Clientes.
 
+## Documentation
+* Postman: https://documenter.getpostman.com/view/16000387/2s9YRGx9Hr
 
 ⭐️ From [DarlanNoetzold](https://github.com/DarlanNoetzold)
